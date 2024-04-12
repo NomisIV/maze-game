@@ -1,6 +1,8 @@
 export class Maze {
     constructor(width, height) {
         this._walls = new Set();
+        this.height = height;
+        this.width = width;
         this._construct(0, 0, width, height, true);
     }
 
