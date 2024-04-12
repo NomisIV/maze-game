@@ -5,7 +5,7 @@ export class Minotaur {
   }
 
   stepTowardsPlayer(player, maze) {
-    const [x, y] = this._bfs(maze, player.posX, player.posY, this.posX, this.posX);
+    const [x, y] = this._bfs(maze, player.posX, player.posY, this.posX, this.posY);
     this.posX = x;
     this.posY = y;
   }
@@ -31,7 +31,7 @@ export class Minotaur {
       if (queueIdx >= 10000) break;
       let [x, y] = queue[queueIdx++];
 
-      if (x === targetPosX && y === targetPosY) {
+      if (x === posX && y === posY) {
         return previous.get(key(x, y)) || [posX, posY];
       }
 
@@ -40,7 +40,7 @@ export class Minotaur {
           let [x2, y2] = [x + pdx, y + pdy];
           if (!seen.has(key(x2, y2))) {
             seen.add(key(x2, y2));
-            previous.set(key(x2, y2));
+            previous.set(key(x2, y2), [x, y]);
             queue.push([x2, y2]);
           }
         }
