@@ -5,16 +5,21 @@ export class Player {
   }
 
   move(maze, stepX, stepY) {
-    let canMove = false;
+    let canMove = true;
 
-    if (stepY === 1) {
-      canMove = maze.hasWall(this.posX, this.posY + 1, this.posX + 1, this.posY + 1)
-    } else if (stepY === -1) {
-      canMove = maze.hasWall(this.posX, this.posY - 1, this.posX + 1, this.posY - 1)
-    } else if (stepX === 1) {
-      canMove = maze.hasWall(this.posX + 1, this.posY, this.posX + 1, this.posY + 1)
-    } else if (stepX === -1) {
-      canMove = maze.hasWall(this.posX - 1, this.posY, this.posX - 1, this.posY + 1)
+    switch (true) {
+      case stepY === 1:
+        canMove = !maze.hasWall(this.posX, this.posY + 1, this.posX + 1, this.posY + 1)
+        break;
+      case stepY === -1:
+        canMove = !maze.hasWall(this.posX, this.posY, this.posX + 1, this.posY)
+        break;
+      case stepX === 1:
+        canMove = !maze.hasWall(this.posX + 1, this.posY, this.posX + 1, this.posY + 1)
+        break;
+      case stepX === -1:
+        canMove = !maze.hasWall(this.posX, this.posY, this.posX, this.posY + 1)
+        break;
     }
 
     const newPosX = this.posX + stepX
