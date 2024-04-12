@@ -1,3 +1,5 @@
+import { Maze } from "./maze.js";
+
 window.setup = () => {
     window.createCanvas(window.innerWidth, window.innerHeight);
 
