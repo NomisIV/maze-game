@@ -10,7 +10,7 @@ let playerY = null;
 let minotaurX = null;
 let minotaurY = null;
 
-let cornerWallTile, noWallTile, straightWallTile;
+let cornerWallTile, noWallTile, straightWallTile, playerSprite, minotaurSprite;
 
 let shownTiles = new Map();
 function shownTime(x, y) {
@@ -32,6 +32,8 @@ export function loadGraphics() {
     cornerWallTile = window.loadImage("assets/corner-wall-tile.png");
     noWallTile = window.loadImage("assets/no-wall-tile.png");
     straightWallTile = window.loadImage("assets/straight-wall-tile.png");
+    playerSprite = window.loadImage("assets/humanoid-asset-pack/Animations/dwarf hunter/DwarfHunterIdleSide.png")
+    minotaurSprite = window.loadImage("assets/demon-asset-pack/premium/premium\ asset\ pack/Premium\ Demon\ Animations/Rancorous\ Bull/RancorousBull.png")
 }
 
 export function moveCamera() {
@@ -123,9 +125,7 @@ export function drawPlayer(player) {
     playerX += limit(player.posX - playerX);
     playerY += limit(player.posY - playerY);
 
-    window.fill(255, 0, 0);
-    window.noStroke();
-    window.rect(roundToPixel(playerX + 0.25), roundToPixel(playerY + 0.25), 0.5, 0.5);
+    window.image(playerSprite, roundToPixel(playerX + 0.25), roundToPixel(playerY + 0.25), 0.5, 0.5, 0, 0, 16, 16)
 }
 
 export function drawMinotaur(minotaur) {
@@ -139,12 +139,11 @@ export function drawMinotaur(minotaur) {
     minotaurX += limit(minotaur.posX - minotaurX);
     minotaurY += limit(minotaur.posY - minotaurY);
 
-    window.fill(200, 100, 40);
-    window.noStroke();
-    window.rect(roundToPixel(minotaurX + 0.25), roundToPixel(minotaurY + 0.25), 0.5, 0.5);
+    window.image(minotaurSprite, roundToPixel(minotaurX + 0.25), roundToPixel(minotaurY + 0.25), 0.5, 0.5, 0, 0, 16, 16);
 }
 
 export function drawFogOfWar(maze, player) {
+    window.noStroke();
 
     addShown(player.posX, player.posY);
 
