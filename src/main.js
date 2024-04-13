@@ -1,5 +1,5 @@
 import { MINOTAUR_SPEED, PLAYER_SPEED } from "./constants.js";
-import { drawMaze, drawMinotaur, drawPlayer, endDrawing, loadGraphics, moveCamera, startDrawing } from "./graphics.js";
+import { drawFogOfWar, drawMaze, drawMinotaur, drawPlayer, endDrawing, loadGraphics, moveCamera, startDrawing } from "./graphics.js";
 import { Maze } from "./maze.js";
 import { Minotaur } from "./minotaur.js";
 import { Player } from "./player.js";
@@ -68,7 +68,7 @@ window.draw = () => {
         moveCooldown -= 1;
     }
 
-    moveCamera(player.posX + 0.5, player.posY + 0.5);
+    moveCamera();
 
     // Drawing
     startDrawing();
@@ -80,6 +80,8 @@ window.draw = () => {
     if (minotaur !== null) {
         drawMinotaur(minotaur);
     }
+
+    drawFogOfWar(maze, player);
 
     endDrawing();
 };

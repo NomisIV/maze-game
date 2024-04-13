@@ -1,4 +1,4 @@
-import { CELL_SIZE, CELL_SIZE_SCREEN, MINOTAUR_SPEED, PLAYER_SPEED } from "./constants.js";
+import { CELL_SIZE, CELL_SIZE_SCREEN, FOG_FADE_OUT, MINOTAUR_SPEED, PLAYER_SPEED } from "./constants.js";
 
 
 let cameraX = null;
@@ -12,21 +12,34 @@ let minotaurY = null;
 
 let cornerWallTile, noWallTile, straightWallTile;
 
+let shownTiles = new Map();
+function shownTime(x, y) {
+    if (!shownTiles.has([x, y].join(" "))) return 0;
+    return (Date.now() - shownTiles.get([x, y].join(" "))) / 1000;
+}
+function addShown(x, y) {
+    if (!shownTiles.has([x, y].join(" "))) {
+        shownTiles.set([x, y].join(" "), Date.now());
+    }
+}
+
 export function loadGraphics() {
     cornerWallTile = window.loadImage("assets/corner-wall-tile.png");
     noWallTile = window.loadImage("assets/no-wall-tile.png");
     straightWallTile = window.loadImage("assets/straight-wall-tile.png");
 }
 
-export function moveCamera(x, y) {
+export function moveCamera() {
+    if (playerX === null || playerY === null) return;
+
     if (cameraX === null || cameraY === null) {
-        cameraX = x;
-        cameraY = y;
+        cameraX = playerX + 0.5;
+        cameraY = playerY + 0.5;
     }
 
     let lerp = Math.exp(-window.deltaTime / 1000 * 3.0);
-    cameraX = lerp * cameraX + (1 - lerp) * x;
-    cameraY = lerp * cameraY + (1 - lerp) * y;
+    cameraX = lerp * cameraX + (1 - lerp) * (playerX + 0.5);
+    cameraY = lerp * cameraY + (1 - lerp) * (playerY + 0.5);
 }
 
 function roundToPixel(coord) {
@@ -53,7 +66,6 @@ export function endDrawing() {
 }
 
 export function drawMaze(maze) {
-
     window.stroke(150, 150, 150);
     window.strokeWeight(0.1);
 
@@ -108,7 +120,7 @@ export function drawPlayer(player) {
 
     window.fill(255, 0, 0);
     window.noStroke();
-    window.rect(playerX + 0.2, playerY + 0.2, 0.6, 0.6);
+    window.rect(roundToPixel(playerX + 0.25), roundToPixel(playerY + 0.25), 0.5, 0.5);
 }
 
 export function drawMinotaur(minotaur) {
@@ -124,5 +136,72 @@ export function drawMinotaur(minotaur) {
 
     window.fill(200, 100, 40);
     window.noStroke();
-    window.rect(minotaurX + 0.2, minotaurY + 0.2, 0.6, 0.6);
+    window.rect(roundToPixel(minotaurX + 0.25), roundToPixel(minotaurY + 0.25), 0.5, 0.5);
+}
+
+export function drawFogOfWar(maze, player) {
+
+    addShown(player.posX, player.posY);
+
+    for (let x = player.posX; x < player.posX + 3; x++) {
+        let y = player.posY;
+        addShown(x, y);
+        if (maze.hasWall(x + 1, y, x + 1, y + 1)) break;
+    }
+    for (let x = player.posX; x > player.posX - 3; x--) {
+        let y = player.posY;
+        addShown(x, y);
+        if (maze.hasWall(x, y, x, y + 1)) break;
+    }
+    for (let y = player.posY; y < player.posY + 3; y++) {
+        let x = player.posX;
+        addShown(x, y);
+        if (maze.hasWall(x, y + 1, x + 1, y + 1)) break;
+    }
+    for (let y = player.posY; y > player.posY - 3; y--) {
+        let x = player.posX;
+        addShown(x, y);
+        if (maze.hasWall(x, y, x + 1, y)) break;
+    }
+
+    let minX = Math.floor((cameraX || 0) - window.width / 2 / CELL_SIZE_SCREEN);
+    let maxX = Math.ceil((cameraX || 0) + window.width / 2 / CELL_SIZE_SCREEN);
+    let minY = Math.floor((cameraY || 0) - window.height / 2 / CELL_SIZE_SCREEN);
+    let maxY = Math.ceil((cameraY || 0) + window.height / 2 / CELL_SIZE_SCREEN);
+
+    for (let y = minY; y < maxY; y++) {
+        for (let x = minX; x < maxX; x++) {
+            let time = shownTime(x, y);
+            if (time < FOG_FADE_OUT) {
+                window.fill(0, 0, 0, (1 - time / FOG_FADE_OUT) * 255);
+                window.rect(x, y, 1, 1);
+            }
+        }
+    }
+
+
+    // window.fill(0, 0, 0);
+    // window.rect(player.posX - 10, player.posY - 10, 9, 10);
+    // window.rect(player.posX - 1, player.posY - 10, 1, 9);
+    // window.rect(player.posX + 1, player.posY - 10, 1, 9);
+    // window.rect(player.posX + 2, player.posY - 10, 9, 10);
+    // window.rect(player.posX - 10, player.posY + 1, 9, 10);
+    // window.rect(player.posX - 1, player.posY + 2, 1, 9);
+    // window.rect(player.posX + 1, player.posY + 2, 1, 9);
+    // window.rect(player.posX + 2, player.posY + 1, 9, 10);
+
+    // for (let x = player.posX; x < player.posX + 10; x++) {
+    //     if (maze.hasWall(x + 1, player.posY, x + 1, player.posY + 1)) {
+    //         x = Math.max(x + 1, player.posX + 2);
+    //         window.rect(x, player.posY, 10, 1);
+    //         break;
+    //     }
+    // }
+    // for (let y = player.posY; y < player.posY + 10; y++) {
+    //     if (maze.hasWall(player.posX, y, player.posX + 1, y)) {
+    //         y = Math.max(y + 1, player.posY + 2);
+    //         window.rect(player.posX, y, 1, 10);
+    //         break;
+    //     }
+    // }
 }
