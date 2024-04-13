@@ -1,16 +1,13 @@
 import { CELL_SIZE, FOG_FADE_IN, FOG_FADE_OUT, MOVE_SPEED } from "./constants.js";
 
-let cornerWallTile, cornerWallTile2, noWallTile, straightWallTile;
 let playerSprite, minotaurSprite, ammoSprite;
+let tilesets = {};
 
 export function loadGraphics() {
-    cornerWallTile = window.loadImage("assets/corner-wall-tile.png");
-    cornerWallTile2 = window.loadImage("assets/corner-wall-tile2.png");
-    noWallTile = window.loadImage("assets/no-wall-tile.png");
-    straightWallTile = window.loadImage("assets/straight-wall-tile.png");
-    playerSprite = window.loadImage("assets/player.png")
-    minotaurSprite = window.loadImage("assets/demon-asset-pack/premium/premium\ asset\ pack/Premium\ Demon\ Animations/Rancorous\ Bull/RancorousBull.png")
-    ammoSprite = window.loadImage("assets/shotgun-shell.png")
+    playerSprite = window.loadImage("assets/player.png");
+    minotaurSprite = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Rancorous Bull/RancorousBull.png");
+    ammoSprite = window.loadImage("assets/shotgun-shell.png");
+    tilesets["mansion"] = window.loadImage("assets/mansion-tiles.png");
 }
 
 function cellSizeScreen() {
@@ -29,7 +26,7 @@ function roundToScreenPixel(coord) {
 }
 
 export class Graphics {
-    constructor() {
+    constructor(tilesetName) {
         this.cameraX = null;
         this.cameraY = null;
         this.playerX = null;
@@ -37,8 +34,10 @@ export class Graphics {
         this.minotaurX = null;
         this.minotaurY = null;
         this.shownTiles = new Map();
+        console.log(tilesets[tilesetName]);
+        this.tileset = tilesets[tilesetName];
     }
-    
+
     shownTime(x, y) {
         if (!this.shownTiles.has([x, y].join(" "))) return 0;
         return (Date.now() - this.shownTiles.get([x, y].join(" "))) / 1000;
@@ -90,49 +89,43 @@ export class Graphics {
         let minY = Math.floor((this.cameraY || 0) - window.height / 2 / cellSizeScreen());
         let maxY = Math.ceil((this.cameraY || 0) + window.height / 2 / cellSizeScreen());
 
+        let tileset = this.tileset;
+
         for (let y = minY; y < maxY; y++) {
             for (let x = minX; x < maxX; x++) {
                 window.push();
-                window.translate(x + 0.5, y + 0.5);
+                window.translate(x, y);
 
                 let wallU = maze.hasWall(x, y, x + 1, y);
                 let wallL = maze.hasWall(x, y, x, y + 1);
                 let wallD = maze.hasWall(x, y + 1, x + 1, y + 1);
                 let wallR = maze.hasWall(x + 1, y, x + 1, y + 1);
-                window.image(noWallTile, -0.25, -0.25, 0.25, 0.25);
-                window.image(noWallTile,     0, -0.25, 0.25, 0.25);
-                window.image(noWallTile, -0.25,     0, 0.25, 0.25);
-                window.image(noWallTile,     0,     0, 0.25, 0.25);
+                window.image(tileset, 0.25, 0.25, 0.5, 0.5, 0, 0, 16, 16);
 
-                let walls = [wallR, wallD, wallL, wallU];
+                window.image(tileset, 0, 0.25, 0.25, 0.5, wallL ? 24 : 8, 0, 8, 16);
+                window.image(tileset, 0.75, 0.25, 0.25, 0.5, wallR ? 16 : 0, 0, 8, 16);
+                window.image(tileset, 0.25, 0, 0.5, 0.25, wallU ? 32 : 0, 8, 16, 8);
+                window.image(tileset, 0.25, 0.75, 0.5, 0.25, wallD ? 32 : 0, 0, 16, 8);
 
+                if (wallU && wallL) window.image(tileset, 0, 0, 0.25, 0.25, 24, 24, 8, 8);
+                else if (wallU) window.image(tileset, 0, 0, 0.25, 0.25, 40, 8, 8, 8);
+                else if (wallL) window.image(tileset, 0, 0, 0.25, 0.25, 24, 8, 8, 8);
+                else window.image(tileset, 0, 0, 0.25, 0.25, 8, 24, 8, 8);
 
-                for (let i = 0; i < walls.length; i++) {
-                    let wall = walls[i];
-                    let nextWall = walls[(i + 1) % walls.length];
+                if (wallU && wallR) window.image(tileset, 0.75, 0, 0.25, 0.25, 16, 24, 8, 8);
+                else if (wallU) window.image(tileset, 0.75, 0, 0.25, 0.25, 32, 8, 8, 8);
+                else if (wallR) window.image(tileset, 0.75, 0, 0.25, 0.25, 16, 8, 8, 8);
+                else window.image(tileset, 0.75, 0, 0.25, 0.25, 0, 24, 8, 8);
 
-                    if (wall && nextWall) {
-                        window.image(cornerWallTile, 0.25, 0.25, 0.25, 0.25);
-                    } else if (wall) {
-                        window.image(straightWallTile, 0.25, 0.25, 0.25, 0.25);
-                    } else if (nextWall) {
-                        window.push();
-                        window.rotate(90);
-                        window.image(straightWallTile, 0.25, -0.5, 0.25, 0.25);
-                        window.pop();
-                    } else {
-                        window.image(cornerWallTile2, 0.25, 0.25, 0.25, 0.25);
-                    }
+                if (wallD && wallL) window.image(tileset, 0, 0.75, 0.25, 0.25, 24, 16, 8, 8);
+                else if (wallD) window.image(tileset, 0, 0.75, 0.25, 0.25, 40, 0, 8, 8);
+                else if (wallL) window.image(tileset, 0, 0.75, 0.25, 0.25, 24, 0, 8, 8);
+                else window.image(tileset, 0, 0.75, 0.25, 0.25, 8, 16, 8, 8);
 
-                    if (wall) {
-                        window.image(straightWallTile, 0.25, -0.25, 0.25, 0.25);
-                        window.image(straightWallTile, 0.25,     0, 0.25, 0.25);
-                    } else {
-                        window.image(noWallTile, 0.25, -0.25, 0.25, 0.25);
-                        window.image(noWallTile, 0.25,     0, 0.25, 0.25);
-                    }
-                    window.rotate(90);
-                }
+                if (wallD && wallR) window.image(tileset, 0.75, 0.75, 0.25, 0.25, 16, 16, 8, 8);
+                else if (wallD) window.image(tileset, 0.75, 0.75, 0.25, 0.25, 32, 0, 8, 8);
+                else if (wallR) window.image(tileset, 0.75, 0.75, 0.25, 0.25, 16, 0, 8, 8);
+                else window.image(tileset, 0.75, 0.75, 0.25, 0.25, 0, 16, 8, 8);
 
                 window.pop();
 
