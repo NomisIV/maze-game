@@ -18,8 +18,8 @@ window.preload = () => {
     loadGraphics();
 }
 
-function resetGame() {
-    maze = new Maze(17, 20);
+function resetGame(resetMaze) {
+    if (resetMaze) maze = new Maze(17, 20);
     graphics = new Graphics();
     player = new Player(8, 19);
     startPos = [player.posX, player.posY];
@@ -28,7 +28,7 @@ function resetGame() {
 }
 
 window.setup = () => {
-    resetGame();
+    resetGame(true);
 
     window.createCanvas(window.innerWidth, window.innerHeight);
 
@@ -100,7 +100,7 @@ window.keyPressed = () => {
     console.log("Pressed: :", window.keyCode);
     switch (window.keyCode) {
         case 27:
-            resetGame();
+            resetGame(true);
             break;
         case 37:
         case 38:
@@ -109,6 +109,9 @@ window.keyPressed = () => {
             if (keyStack.indexOf(window.keyCode) < 0) {
                 keyStack.push(window.keyCode);
             }
+            break;
+        case 82:
+            resetGame(false);
             break;
     }
 

@@ -1,4 +1,4 @@
-import { CELL_SIZE, CELL_SIZE_SCREEN, FOG_FADE_IN, FOG_FADE_OUT, MINOTAUR_SPEED, PLAYER_SPEED } from "./constants.js";
+import { CELL_SIZE, FOG_FADE_IN, FOG_FADE_OUT, MINOTAUR_SPEED, PLAYER_SPEED } from "./constants.js";
 
 let cornerWallTile, cornerWallTile2, noWallTile, straightWallTile;
 let playerSprite, minotaurSprite;
@@ -12,12 +12,19 @@ export function loadGraphics() {
     minotaurSprite = window.loadImage("assets/demon-asset-pack/premium/premium\ asset\ pack/Premium\ Demon\ Animations/Rancorous\ Bull/RancorousBull.png")
 }
 
+function cellSizeScreen() {
+    let size = Math.min(window.width, window.height);
+    let scale = size / (CELL_SIZE * 6);
+
+    return CELL_SIZE * Math.max(1, Math.floor(scale));
+}
+
 function roundToPixel(coord) {
     return Math.round(coord * CELL_SIZE) / CELL_SIZE;
 }
 
 function roundToScreenPixel(coord) {
-    return Math.round(coord * CELL_SIZE_SCREEN) / CELL_SIZE_SCREEN;
+    return Math.round(coord * cellSizeScreen()) / cellSizeScreen();
 }
 
 export class Graphics {
@@ -29,7 +36,6 @@ export class Graphics {
         this.minotaurX = null;
         this.minotaurY = null;
         this.shownTiles = new Map();
-
     }
     
     shownTime(x, y) {
@@ -66,7 +72,7 @@ export class Graphics {
         window.push();
         window.noSmooth();
         window.translate(Math.floor(window.width / 2), Math.floor(window.height / 2));
-        window.scale(CELL_SIZE_SCREEN);
+        window.scale(cellSizeScreen());
         window.translate(-roundToScreenPixel(this.cameraX || 0), -roundToScreenPixel(this.cameraY || 0));
         //window.scale(32);
 
@@ -81,10 +87,10 @@ export class Graphics {
         window.stroke(150, 150, 150);
         window.strokeWeight(0.1);
 
-        let minX = Math.floor((this.cameraX || 0) - window.width / 2 / CELL_SIZE_SCREEN);
-        let maxX = Math.ceil((this.cameraX || 0) + window.width / 2 / CELL_SIZE_SCREEN);
-        let minY = Math.floor((this.cameraY || 0) - window.height / 2 / CELL_SIZE_SCREEN);
-        let maxY = Math.ceil((this.cameraY || 0) + window.height / 2 / CELL_SIZE_SCREEN);
+        let minX = Math.floor((this.cameraX || 0) - window.width / 2 / cellSizeScreen());
+        let maxX = Math.ceil((this.cameraX || 0) + window.width / 2 / cellSizeScreen());
+        let minY = Math.floor((this.cameraY || 0) - window.height / 2 / cellSizeScreen());
+        let maxY = Math.ceil((this.cameraY || 0) + window.height / 2 / cellSizeScreen());
 
         for (let y = minY; y < maxY; y++) {
             for (let x = minX; x < maxX; x++) {
@@ -208,10 +214,10 @@ export class Graphics {
             if (maze.hasWall(x, y, x + 1, y)) break;
         }
 
-        let minX = Math.floor((this.cameraX || 0) - window.width / 2 / CELL_SIZE_SCREEN);
-        let maxX = Math.ceil((this.cameraX || 0) + window.width / 2 / CELL_SIZE_SCREEN);
-        let minY = Math.floor((this.cameraY || 0) - window.height / 2 / CELL_SIZE_SCREEN);
-        let maxY = Math.ceil((this.cameraY || 0) + window.height / 2 / CELL_SIZE_SCREEN);
+        let minX = Math.floor((this.cameraX || 0) - window.width / 2 / cellSizeScreen());
+        let maxX = Math.ceil((this.cameraX || 0) + window.width / 2 / cellSizeScreen());
+        let minY = Math.floor((this.cameraY || 0) - window.height / 2 / cellSizeScreen());
+        let maxY = Math.ceil((this.cameraY || 0) + window.height / 2 / cellSizeScreen());
 
         for (let y = minY; y < maxY; y++) {
             for (let x = minX; x < maxX; x++) {
