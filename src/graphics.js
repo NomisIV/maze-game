@@ -1,4 +1,4 @@
-import { CELL_SIZE, CELL_SIZE_SCREEN, FOG_FADE_OUT, MINOTAUR_SPEED, PLAYER_SPEED } from "./constants.js";
+import { CELL_SIZE, CELL_SIZE_SCREEN, FOG_FADE_IN, FOG_FADE_OUT, MINOTAUR_SPEED, PLAYER_SPEED } from "./constants.js";
 
 
 let cameraX = null;
@@ -18,7 +18,12 @@ function shownTime(x, y) {
     return (Date.now() - shownTiles.get([x, y].join(" "))) / 1000;
 }
 function addShown(x, y) {
-    if (!shownTiles.has([x, y].join(" "))) {
+    if (shownTiles.has([x, y].join(" "))) {
+        let oldTime = shownTiles.get([x, y].join(" "));
+        if (oldTime + FOG_FADE_OUT * 1000 < Date.now()) {
+            shownTiles.set([x, y].join(" "), Date.now() - FOG_FADE_OUT * 1000);
+        }
+    } else {
         shownTiles.set([x, y].join(" "), Date.now());
     }
 }
@@ -173,8 +178,14 @@ export function drawFogOfWar(maze, player) {
         for (let x = minX; x < maxX; x++) {
             let time = shownTime(x, y);
             if (time < FOG_FADE_OUT) {
-                window.fill(0, 0, 0, (1 - time / FOG_FADE_OUT) * 255);
+                let alpha = 1 - time / FOG_FADE_OUT;
+                window.fill(0, 0, 0, alpha * 255);
                 window.rect(x, y, 1, 1);
+            } else {
+                let alpha = Math.min((time - FOG_FADE_OUT) / FOG_FADE_IN, 1);
+                window.fill(0, 0, 0, alpha * 128);
+                window.rect(x, y, 1, 1);
+
             }
         }
     }
