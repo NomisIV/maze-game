@@ -1,7 +1,7 @@
 import { CELL_SIZE, FOG_FADE_IN, FOG_FADE_OUT, MOVE_SPEED } from "./constants.js";
 
 let cornerWallTile, cornerWallTile2, noWallTile, straightWallTile;
-let playerSprite, minotaurSprite;
+let playerSprite, minotaurSprite, ammoSprite;
 
 export function loadGraphics() {
     cornerWallTile = window.loadImage("assets/corner-wall-tile.png");
@@ -10,6 +10,7 @@ export function loadGraphics() {
     straightWallTile = window.loadImage("assets/straight-wall-tile.png");
     playerSprite = window.loadImage("assets/player.png")
     minotaurSprite = window.loadImage("assets/demon-asset-pack/premium/premium\ asset\ pack/Premium\ Demon\ Animations/Rancorous\ Bull/RancorousBull.png")
+    ammoSprite = window.loadImage("assets/shotgun-shell.png")
 }
 
 function cellSizeScreen() {
@@ -179,9 +180,8 @@ export class Graphics {
     }
 
     drawAmmunition(x, y) {
-        window.fill(255, 0, 0);
-        window.noStroke();
-        window.rect(x + 0.4, y + 0.4, 0.2, 0.2);
+        let float = Math.floor(window.frameCount / 60 * 2) % 2 / 16;
+        window.image(ammoSprite, x + 0.25, y + 0.25 + float, 0.5, 0.5)
     }
 
     drawFogOfWar(maze, player) {
