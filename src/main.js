@@ -4,22 +4,32 @@ import { Maze } from "./maze.js";
 import { Minotaur } from "./minotaur.js";
 import { Player } from "./player.js";
 
-let maze = new Maze(17, 20);
+let maze;
+let graphics;
+let player;
+let startPos;
+let minotaur;
 
-let graphics = new Graphics();
-let player = new Player(8, 19);
-let startPos = [player.posX, player.posY];
-let minotaur = null;
-
+let moveCooldown;
 let keyStack = [];
-let moveCooldown = 0;
 
 window.preload = () => {
     window.angleMode(window.DEGREES);
     loadGraphics();
 }
 
+function resetGame() {
+    maze = new Maze(17, 20);
+    graphics = new Graphics();
+    player = new Player(8, 19);
+    startPos = [player.posX, player.posY];
+    minotaur = null;
+    moveCooldown = 0;
+}
+
 window.setup = () => {
+    resetGame();
+
     window.createCanvas(window.innerWidth, window.innerHeight);
 
 };
@@ -89,6 +99,9 @@ window.draw = () => {
 window.keyPressed = () => {
     console.log("Pressed: :", window.keyCode);
     switch (window.keyCode) {
+        case 27:
+            resetGame();
+            break;
         case 37:
         case 38:
         case 39:
