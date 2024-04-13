@@ -2,6 +2,7 @@ export class Player {
   constructor(x, y) {
     this.posX = x;
     this.posY = y;
+    this.isLookingLeft = false;
   }
 
   move(maze, stepX, stepY) {
@@ -16,9 +17,11 @@ export class Player {
         break;
       case stepX === 1:
         canMove = !maze.hasWall(this.posX + 1, this.posY, this.posX + 1, this.posY + 1)
+        this.isLookingLeft = false;
         break;
       case stepX === -1:
         canMove = !maze.hasWall(this.posX, this.posY, this.posX, this.posY + 1)
+        this.isLookingLeft = true;
         break;
     }
 

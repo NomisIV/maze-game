@@ -2,10 +2,16 @@ export class Minotaur {
     constructor(x, y) {
         this.posX = x;
         this.posY = y;
+        this.isLookingLeft = false;
     }
 
     stepTowardsPlayer(player, maze) {
         const [x, y] = this._bfs(maze, player.posX, player.posY, this.posX, this.posY);
+        if (x < this.posX) {
+            this.isLookingLeft = true;
+        } else if (this.posX < x) {
+            this.isLookingLeft = false;
+        }
         this.posX = x;
         this.posY = y;
     }
