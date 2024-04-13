@@ -3,6 +3,7 @@ export class Player {
     this.posX = x;
     this.posY = y;
     this.isLookingLeft = false;
+    this.hasAmmunition = false;
   }
 
   move(maze, stepX, stepY) {

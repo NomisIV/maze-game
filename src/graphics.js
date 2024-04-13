@@ -1,4 +1,4 @@
-import { CELL_SIZE, FOG_FADE_IN, FOG_FADE_OUT, MINOTAUR_SPEED, PLAYER_SPEED } from "./constants.js";
+import { CELL_SIZE, FOG_FADE_IN, FOG_FADE_OUT, MOVE_SPEED } from "./constants.js";
 
 let cornerWallTile, cornerWallTile2, noWallTile, straightWallTile;
 let playerSprite, minotaurSprite;
@@ -84,9 +84,6 @@ export class Graphics {
     }
 
     drawMaze(maze) {
-        window.stroke(150, 150, 150);
-        window.strokeWeight(0.1);
-
         let minX = Math.floor((this.cameraX || 0) - window.width / 2 / cellSizeScreen());
         let maxX = Math.ceil((this.cameraX || 0) + window.width / 2 / cellSizeScreen());
         let minY = Math.floor((this.cameraY || 0) - window.height / 2 / cellSizeScreen());
@@ -149,7 +146,7 @@ export class Graphics {
             this.playerY = player.posY;
         }
 
-        let maxDelta = 1 / (PLAYER_SPEED / 2);
+        let maxDelta = 1 / MOVE_SPEED;
         let limit = v => Math.min(Math.max(-maxDelta, v), maxDelta);
         this.playerX += limit(player.posX - this.playerX);
         this.playerY += limit(player.posY - this.playerY);
@@ -171,7 +168,7 @@ export class Graphics {
             this.minotaurY = minotaur.posY;
         }
 
-        let maxDelta = 1 / MINOTAUR_SPEED;
+        let maxDelta = 1 / MOVE_SPEED;
         let limit = v => Math.min(Math.max(-maxDelta, v), maxDelta);
         this.minotaurX += limit(minotaur.posX - this.minotaurX);
         this.minotaurY += limit(minotaur.posY - this.minotaurY);
@@ -186,6 +183,12 @@ export class Graphics {
         }
         window.image(minotaurSprite, 0, 0, 0.5, 0.5, sx, 0, 16, 16);
         window.pop();
+    }
+
+    drawAmmunition(x, y) {
+        window.fill(255, 0, 0);
+        window.noStroke();
+        window.rect(x + 0.4, y + 0.4, 0.2, 0.2);
     }
 
     drawFogOfWar(maze, player) {
