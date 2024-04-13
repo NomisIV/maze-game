@@ -1,5 +1,5 @@
 import { MINOTAUR_SPEED, PLAYER_SPEED } from "./constants.js";
-import { drawMaze, drawMinotaur, drawPlayer, endDrawing, moveCamera, startDrawing } from "./graphics.js";
+import { drawMaze, drawMinotaur, drawPlayer, endDrawing, loadGraphics, moveCamera, startDrawing } from "./graphics.js";
 import { Maze } from "./maze.js";
 import { Minotaur } from "./minotaur.js";
 import { Player } from "./player.js";
@@ -12,6 +12,11 @@ let minotaur = null;
 
 let keyStack = [];
 let moveCooldown = 0;
+
+window.preload = () => {
+    window.angleMode(window.DEGREES);
+    loadGraphics();
+}
 
 window.setup = () => {
     window.createCanvas(window.innerWidth, window.innerHeight);

@@ -53,6 +53,15 @@ export class Maze {
             lastY = splits[i];
         }
         this._constructInner(0, lastY, this.width, this.height);
+
+        this._constructInner(-10, -10, 0, this.height + 10);
+        this._constructInner(this.width, -10, this.width + 10, this.height + 10);
+        this._constructInner(0, -10, this.width, 0);
+        this._constructInner(0, this.height, this.width, this.height + 10);
+        this._splitVertical(this.height, this.height + 10, this.height + 1, 0);
+        this._splitVertical(this.height, this.height + 10, this.height, this.width);
+        this._splitVertical(-10, 0, -1, 0);
+        this._splitVertical(-10, 0, -2, this.width);
     }
 
     _splitHorizontal(minX, maxX, gapX, y) {
