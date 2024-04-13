@@ -125,7 +125,8 @@ export function drawPlayer(player) {
     playerX += limit(player.posX - playerX);
     playerY += limit(player.posY - playerY);
 
-    window.image(playerSprite, roundToPixel(playerX + 0.25), roundToPixel(playerY + 0.25), 0.5, 0.5, 0, 0, 16, 16)
+    let sx = Math.floor(window.frameCount / 60 * 4) % 4 * 16;
+    window.image(playerSprite, roundToPixel(playerX + 0.25), roundToPixel(playerY + 0.25), 0.5, 0.5, sx, 0, 16, 16)
 }
 
 export function drawMinotaur(minotaur) {
@@ -139,7 +140,9 @@ export function drawMinotaur(minotaur) {
     minotaurX += limit(minotaur.posX - minotaurX);
     minotaurY += limit(minotaur.posY - minotaurY);
 
-    window.image(minotaurSprite, roundToPixel(minotaurX + 0.25), roundToPixel(minotaurY + 0.25), 0.5, 0.5, 0, 0, 16, 16);
+    let sx = Math.floor(window.frameCount / 60 * 5) % 4 * 16;
+    if (sx == 48) sx = 16;
+    window.image(minotaurSprite, roundToPixel(minotaurX + 0.25), roundToPixel(minotaurY + 0.25), 0.5, 0.5, sx, 0, 16, 16);
 }
 
 export function drawFogOfWar(maze, player) {
