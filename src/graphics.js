@@ -151,15 +151,8 @@ export class Graphics {
         this.playerX += limit(player.posX - this.playerX);
         this.playerY += limit(player.posY - this.playerY);
 
-        let sx = Math.floor(window.frameCount / 60 * 4) % 4 * 16;
-        window.push();
-        window.translate(roundToPixel(this.playerX + 0.25), roundToPixel(this.playerY + 0.25))
-        if (player.isLookingLeft) {
-            window.scale(-1, 1);
-            window.translate(-0.5, 0)
-        }
-        window.image(playerSprite, 0, 0, 0.5, 0.5, sx, 0, 16, 16)
-        window.pop();
+        let dir = ["right", "left", "up", "down"].indexOf(player.direction);
+        window.image(playerSprite, this.playerX + 0.25, this.playerY + 0.25, 0.5, 0.5, dir * 16, 0, 16, 16);
     }
 
     drawMinotaur(minotaur) {
