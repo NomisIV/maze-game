@@ -1,11 +1,13 @@
+import { drawMaze, drawMinotaur, drawPlayer, endDrawing, moveCamera, startDrawing } from "./graphics.js";
 import { Maze } from "./maze.js";
+import { Minotaur } from "./minotaur.js";
 import { Player } from "./player.js";
 
-let maze = new Maze(20, 15);
+let maze = new Maze(17, 20);
 
-let player = new Player(0, 0);
-
-const CELL_SIZE = 20;
+let player = new Player(8, 19);
+let startPos = [player.posX, player.posY];
+let minotaur = null;
 
 window.setup = () => {
     window.createCanvas(window.innerWidth, window.innerHeight);
@@ -17,30 +19,27 @@ window.windowResized = () => {
 }
 
 window.draw = () => {
-    window.background(100, 100, 100);
+    // Game logic
 
-    
-    window.stroke(255, 255, 255);
-    window.strokeWeight(3);
-
-    for (let [x1, y1, x2, y2] of maze.getWalls()) {
-        window.line
-            ( x1 * CELL_SIZE
-            , y1 * CELL_SIZE
-            , x2 * CELL_SIZE
-            , y2 * CELL_SIZE
-            );
+    if (frameCount % 15 === 0 && minotaur !== null) {
+        minotaur.stepTowardsPlayer(player, maze);
     }
 
-    // Draw player
-    window.fill(255, 0, 0);
-    window.noStroke(3);
-    window.rect
-        (player.posX * CELL_SIZE
-        , player.posY * CELL_SIZE
-        , CELL_SIZE
-        , CELL_SIZE
-        );
+
+    moveCamera(player.posX + 0.5, player.posY + 0.5);
+
+    // Drawing
+    startDrawing();
+
+    drawMaze(maze);
+
+    drawPlayer(player);
+
+    if (minotaur !== null) {
+        drawMinotaur(minotaur);
+    }
+
+    endDrawing();
 };
 
 window.keyPressed = () => {
@@ -58,6 +57,11 @@ window.keyPressed = () => {
         case 40: // DownArrow
             player.move(maze, 0, 1)
             break;
+    }
+
+    let [startX, startY] = startPos;
+    if (minotaur === null && Math.abs(startX - player.posX) + Math.abs(startY - player.posY) > 2) {
+        minotaur = new Minotaur(startX, startY);
     }
 };
 window.keyReleased = () => {

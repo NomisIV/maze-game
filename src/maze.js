@@ -3,7 +3,7 @@ export class Maze {
         this._walls = new Set();
         this.height = height;
         this.width = width;
-        this._construct(0, 0, width, height, true);
+        this._construct();
     }
 
     _wallString(x1, y1, x2, y2) {
@@ -26,46 +26,102 @@ export class Maze {
         return walls;
     }
 
-    _construct(minX, minY, maxX, maxY, outerWalls = false) {
-        if (outerWalls) {
-            for (let x = minX; x < maxX; x++) {
-                this.addWall(x, minY, x + 1, minY);
-                this.addWall(x, maxY, x + 1, maxY);
-            }
-            for (let y = minY; y < maxY; y++) {
-                this.addWall(minX, y, minX, y + 1);
-                this.addWall(maxX, y, maxX, y + 1);
-            }
+    _construct() {
+        for (let x = 0; x < this.width; x++) {
+            this.addWall(x, 0, x + 1, 0);
+            this.addWall(x, this.height, x + 1, this.height);
+        }
+        for (let y = 0; y < this.height; y++) {
+            this.addWall(0, y, 0, y + 1);
+            this.addWall(this.width, y, this.width, y + 1);
         }
 
+        let splits = evenSplits(1, this.height - 1, 3);
+
+        let evenOffset = Math.floor(Math.random() * 2);
+
+        for (let i = 0; i < splits.length; i++) {
+            let minX = (i + evenOffset) % 2 ? Math.floor(this.width / 2) : 0;
+            let maxX = (i + evenOffset) % 2 ? this.width : Math.ceil(this.width / 2);
+            let gapX = linearDistr(minX, maxX - 1);
+            this._splitHorizontal(0, this.width, gapX, splits[i]);
+        }
+
+        let lastY = 0;
+        for (let i = 0; i < splits.length; i++) {
+            this._constructInner(0, lastY, this.width, splits[i]);
+            lastY = splits[i];
+        }
+        this._constructInner(0, lastY, this.width, this.height);
+    }
+
+    _splitHorizontal(minX, maxX, gapX, y) {
+        for (let x = minX; x < maxX; x++) {
+            if (x != gapX) this.addWall(x, y, x + 1, y);
+        }
+    }
+
+    _splitVertical(minY, maxY, gapY, x) {
+        for (let y = minY; y < maxY; y++) {
+            if (y != gapY) this.addWall(x, y, x, y + 1);
+        }
+    }
+
+    _constructInner(minX, minY, maxX, maxY, outerWalls = false) {
         let width = maxX - minX;
         let height = maxY - minY;
         if (width <= 1 || height <= 1) return;
 
-        if (Math.random() * (width + height) < width) {
+        let vertical =
+            width > height * 2.5 ? true :
+            width * 2.5 < height ? false :
+            Math.random() < 0.5;
+
+        if (vertical) {
             // Split with a vertical wall
+            let splitX = triangleDistr(minX + 1, maxX - 1);
+            let gapY = linearDistr(minY, maxY - 1);
+            this._splitVertical(minY, maxY, gapY, splitX);
 
-            let splitX = minX + 1 + Math.floor(Math.random() * (width - 1));
-            let gapY = minY + Math.floor(Math.random() * height);
-
-            for (let y = minY; y < maxY; y++) {
-                if (y != gapY) this.addWall(splitX, y, splitX, y + 1);
-            }
-
-            this._construct(minX, minY, splitX, maxY);
-            this._construct(splitX, minY, maxX, maxY);
+            this._constructInner(minX, minY, splitX, maxY);
+            this._constructInner(splitX, minY, maxX, maxY);
         } else {
             // Split with a horizontal wall
+            let splitY = triangleDistr(minY + 1, maxY - 1);
+            let gapX = linearDistr(minX, maxX - 1);
+            this._splitHorizontal(minX, maxX, gapX, splitY);
 
-            let splitY = minY + 1 + Math.floor(Math.random() * (height - 1));
-            let gapX = minX + Math.floor(Math.random() * width);
-
-            for (let x = minX; x < maxX; x++) {
-                if (x != gapX) this.addWall(x, splitY, x + 1, splitY);
-            }
-
-            this._construct(minX, minY, maxX, splitY);
-            this._construct(minX, splitY, maxX, maxY);
+            this._constructInner(minX, minY, maxX, splitY);
+            this._constructInner(minX, splitY, maxX, maxY);
         }
     }
+}
+
+function linearDistr(min, max) {
+    return min + Math.floor(Math.random() * (max - min + 1));
+}
+
+function triangleDistr(min, max) {
+    let r = (Math.random() + Math.random()) / 2;
+    return min + Math.floor(r * (max - min + 1));
+}
+
+function evenSplits(min, max, splits) {
+    if (splits === 0) return [];
+
+    let splitsBefore = Math.floor((splits - 1) / 2);
+    let splitsAfter = Math.ceil((splits - 1) / 2);
+
+    let min2 = min + splitsBefore;
+    let max2 = max - splitsAfter;
+
+    let lo = Math.floor((min2 * 2 + max2 * 1) / 3);
+    let hi = Math.ceil((min2 * 1 + max2 * 2) / 3);
+    let split = triangleDistr(lo, hi);
+
+    return [
+        ...evenSplits(min, split - 1, splitsBefore),
+        split,
+        ...evenSplits(split + 1, max, splitsAfter),
+    ];
 }

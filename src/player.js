@@ -1,7 +1,7 @@
 export class Player {
-  constructor() {
-    this.posX = 0;
-    this.posY = 0;
+  constructor(x, y) {
+    this.posX = x;
+    this.posY = y;
   }
 
   move(maze, stepX, stepY) {
