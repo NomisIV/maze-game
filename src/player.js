@@ -33,5 +33,7 @@ export class Player {
       this.posX = newPosX
       this.posY = newPosY
     }
+
+    return canMove;
   }
 }
