@@ -8,7 +8,7 @@ export function loadGraphics() {
     cornerWallTile2 = window.loadImage("assets/corner-wall-tile2.png");
     noWallTile = window.loadImage("assets/no-wall-tile.png");
     straightWallTile = window.loadImage("assets/straight-wall-tile.png");
-    playerSprite = window.loadImage("assets/humanoid-asset-pack/Animations/dwarf hunter/DwarfHunterIdleSide.png")
+    playerSprite = window.loadImage("assets/player.png")
     minotaurSprite = window.loadImage("assets/demon-asset-pack/premium/premium\ asset\ pack/Premium\ Demon\ Animations/Rancorous\ Bull/RancorousBull.png")
 }
 
