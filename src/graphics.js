@@ -10,7 +10,8 @@ let playerY = null;
 let minotaurX = null;
 let minotaurY = null;
 
-let cornerWallTile, noWallTile, straightWallTile, playerSprite, minotaurSprite;
+let cornerWallTile, cornerWallTile2, noWallTile, straightWallTile;
+let playerSprite, minotaurSprite;
 
 let shownTiles = new Map();
 function shownTime(x, y) {
@@ -30,6 +31,7 @@ function addShown(x, y) {
 
 export function loadGraphics() {
     cornerWallTile = window.loadImage("assets/corner-wall-tile.png");
+    cornerWallTile2 = window.loadImage("assets/corner-wall-tile2.png");
     noWallTile = window.loadImage("assets/no-wall-tile.png");
     straightWallTile = window.loadImage("assets/straight-wall-tile.png");
     playerSprite = window.loadImage("assets/humanoid-asset-pack/Animations/dwarf hunter/DwarfHunterIdleSide.png")
@@ -95,8 +97,26 @@ export function drawMaze(maze) {
             window.image(noWallTile, -0.25,     0, 0.25, 0.25);
             window.image(noWallTile,     0,     0, 0.25, 0.25);
 
-            for (let wall of [wallR, wallD, wallL, wallU]) {
-                window.image(cornerWallTile, 0.25, 0.25, 0.25, 0.25);
+            let walls = [wallR, wallD, wallL, wallU];
+
+
+            for (let i = 0; i < walls.length; i++) {
+                let wall = walls[i];
+                let nextWall = walls[(i + 1) % walls.length];
+
+                if (wall && nextWall) {
+                    window.image(cornerWallTile, 0.25, 0.25, 0.25, 0.25);
+                } else if (wall) {
+                    window.image(straightWallTile, 0.25, 0.25, 0.25, 0.25);
+                } else if (nextWall) {
+                    window.push();
+                    window.rotate(90);
+                    window.image(straightWallTile, 0.25, -0.5, 0.25, 0.25);
+                    window.pop();
+                } else {
+                    window.image(cornerWallTile2, 0.25, 0.25, 0.25, 0.25);
+                }
+
                 if (wall) {
                     window.image(straightWallTile, 0.25, -0.25, 0.25, 0.25);
                     window.image(straightWallTile, 0.25,     0, 0.25, 0.25);
