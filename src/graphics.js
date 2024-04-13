@@ -185,6 +185,8 @@ export class Graphics {
     }
 
     drawFogOfWar(maze, player) {
+        // return;
+
         window.noStroke();
 
         this.addShown(player.posX, player.posY);

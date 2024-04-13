@@ -1,9 +1,9 @@
 export class Maze {
-    constructor(width, height) {
+    constructor(chunkWidth, chunkHeight, numX, numY) {
         this._walls = new Set();
-        this.height = height;
-        this.width = width;
-        this._construct();
+        this.height = chunkWidth * numX;
+        this.width = chunkHeight * numY;
+        this._construct(chunkWidth, chunkHeight, numX, numY);
     }
 
     _wallString(x1, y1, x2, y2) {
@@ -26,7 +26,7 @@ export class Maze {
         return walls;
     }
 
-    _construct() {
+    _construct(chunkWidth, chunkHeight, numX, numY) {
         for (let x = 0; x < this.width; x++) {
             this.addWall(x, 0, x + 1, 0);
             this.addWall(x, this.height, x + 1, this.height);
@@ -36,32 +36,20 @@ export class Maze {
             this.addWall(this.width, y, this.width, y + 1);
         }
 
-        let splits = evenSplits(1, this.height - 1, 3);
+        for (let y = 0; y < this.height; y += chunkHeight) {
+            for (let x = 0; x < this.width; x += chunkWidth) {
+                if (x > 0) {
+                    let gapY = linearDistr(y, y + chunkHeight - 1);
+                    this._splitVertical(y, y + chunkHeight, gapY, x);
+                }
+                if (y > 0) {
+                    let gapX = linearDistr(x, x + chunkWidth - 1);
+                    this._splitHorizontal(x, x + chunkWidth, gapX, y);
+                }
 
-        let evenOffset = Math.floor(Math.random() * 2);
-
-        for (let i = 0; i < splits.length; i++) {
-            let minX = (i + evenOffset) % 2 ? Math.floor(this.width / 2) : 0;
-            let maxX = (i + evenOffset) % 2 ? this.width : Math.ceil(this.width / 2);
-            let gapX = linearDistr(minX, maxX - 1);
-            this._splitHorizontal(0, this.width, gapX, splits[i]);
+                this._constructInner(x, y, x + chunkWidth, y + chunkHeight);
+            }
         }
-
-        let lastY = 0;
-        for (let i = 0; i < splits.length; i++) {
-            this._constructInner(0, lastY, this.width, splits[i]);
-            lastY = splits[i];
-        }
-        this._constructInner(0, lastY, this.width, this.height);
-
-        this._constructInner(-10, -10, 0, this.height + 10);
-        this._constructInner(this.width, -10, this.width + 10, this.height + 10);
-        this._constructInner(0, -10, this.width, 0);
-        this._constructInner(0, this.height, this.width, this.height + 10);
-        this._splitVertical(this.height, this.height + 10, this.height + 1, 0);
-        this._splitVertical(this.height, this.height + 10, this.height, this.width);
-        this._splitVertical(-10, 0, -1, 0);
-        this._splitVertical(-10, 0, -2, this.width);
     }
 
     _splitHorizontal(minX, maxX, gapX, y) {
@@ -76,7 +64,7 @@ export class Maze {
         }
     }
 
-    _constructInner(minX, minY, maxX, maxY, outerWalls = false) {
+    _constructInner(minX, minY, maxX, maxY) {
         let width = maxX - minX;
         let height = maxY - minY;
         if (width <= 1 || height <= 1) return;

@@ -20,7 +20,7 @@ window.preload = () => {
 }
 
 function resetGame(resetMaze) {
-    if (resetMaze) maze = new Maze(17, 20);
+    if (resetMaze) maze = new Maze(8, 8, 4, 4);
     graphics = new Graphics();
     player = new Player(8, 19);
     startPos = [player.posX, player.posY];
