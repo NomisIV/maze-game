@@ -1,11 +1,12 @@
 import { MINOTAUR_SPEED, PLAYER_SPEED } from "./constants.js";
-import { drawFogOfWar, drawMaze, drawMinotaur, drawPlayer, endDrawing, loadGraphics, moveCamera, startDrawing } from "./graphics.js";
+import { Graphics, loadGraphics } from "./graphics.js";
 import { Maze } from "./maze.js";
 import { Minotaur } from "./minotaur.js";
 import { Player } from "./player.js";
 
 let maze = new Maze(17, 20);
 
+let graphics = new Graphics();
 let player = new Player(8, 19);
 let startPos = [player.posX, player.posY];
 let minotaur = null;
@@ -68,22 +69,20 @@ window.draw = () => {
         moveCooldown -= 1;
     }
 
-    moveCamera();
+    graphics.moveCamera();
 
     // Drawing
-    startDrawing();
-
-    drawMaze(maze);
-
-    drawPlayer(player);
+    graphics.startDrawing();
+    graphics.drawMaze(maze);
+    graphics.drawPlayer(player);
 
     if (minotaur !== null) {
-        drawMinotaur(minotaur);
+        graphics.drawMinotaur(minotaur);
     }
 
-    drawFogOfWar(maze, player);
+    graphics.drawFogOfWar(maze, player);
 
-    endDrawing();
+    graphics.endDrawing();
 };
 
 
