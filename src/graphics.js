@@ -8,6 +8,7 @@ export function loadGraphics() {
     minotaurSprite = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Rancorous Bull/RancorousBull.png");
     ammoSprite = window.loadImage("assets/shotgun-shell.png");
     tilesets["mansion"] = window.loadImage("assets/mansion-tiles.png");
+    tilesets["sand"] = window.loadImage("assets/sand-tiles.png");
 }
 
 function cellSizeScreen() {

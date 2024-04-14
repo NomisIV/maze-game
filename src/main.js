@@ -20,7 +20,7 @@ window.preload = () => {
 
 function resetGame(resetMaze) {
     if (resetMaze) maze = new Maze(8, 8, 4, 4);
-    graphics = new Graphics("mansion");
+    graphics = new Graphics("sand");
     player = new Player(8, 19);
     ammunitions = [[8, 17], [8, 16]];
     minotaurs = [new Minotaur(8, 22), new Minotaur(8, 23)];
