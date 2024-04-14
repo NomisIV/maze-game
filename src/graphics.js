@@ -54,7 +54,6 @@ export function loadGraphics() {
     monsterSprites["infernal scorcher"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/infernal scorcher/InfernalScorche.png");
     monsterSprites["leering leviathan"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/leering leviathan/LeeringLevithan.png");
     monsterSprites["Maleficent Ape"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Maleficent Ape/MaleficentApe.png");
-    monsterSprites["malignant gazer"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/malignant gazer/malignantgazer.png");
     monsterSprites["Mighty Desolator"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Mighty Desolator/MightyDesolator.png");
     monsterSprites["rabid cerberus"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/rabid cerberus/RabidCerberus.png");
     monsterSprites["Rancorous Bull"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Rancorous Bull/RancorousBull.png");

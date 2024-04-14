@@ -4,6 +4,53 @@ import { cellMaze, layerMaze } from "./maze.js";
 import { Monster } from "./monster.js";
 import { Player } from "./player.js";
 
+let monsterNames = [
+    "antlered rascal",
+    "clawed abomination",
+    "crimson imp",
+    "Depraved Blackguard",
+    "fledgling demon",
+    "floating eye",
+    "foul gouger",
+    "grinning gremlin",
+    "nefarious scamp",
+    "pit balor",
+    "pointed demonspawn",
+    "Rascally Demonling",
+    "skewering stalker",
+    "tainted scoundrel",
+    "warp skull",
+    "armored goliath",
+    "beastly impaler",
+    "blade hellion",
+    "Blood Drinker",
+    "bulging incubus",
+    "dastardly Crusher",
+    "deadly cambion",
+    "demonic arachnid",
+    "ebon astaroth",
+    "horned brute",
+    "pronged fury",
+    "red devil",
+    "spiked ravager",
+    "vicious miscreant",
+    "wicked wretch",
+    "abyssal baron",
+    "combusting balrog",
+    "evil titan",
+    "gigantic juggernaut",
+    "infernal scorcher",
+    "leering leviathan",
+    "Maleficent Ape",
+    "Mighty Desolator",
+    "rabid cerberus",
+    "Rancorous Bull",
+    "Sanguine Annihilator",
+    "Towering Mongrel",
+    "vile tyrant",
+    "warp lord",
+]
+
 class GameState {
     constructor(levelIdx) {
         this.graphics = null;
@@ -38,6 +85,7 @@ class GameState {
                     }
                     this.levelExtra.push([x, y]);
                 }
+                monsterNames.sort(() => Math.random() - 0.5);
                 break;
         }
 
@@ -69,54 +117,8 @@ class GameState {
                 this.player = new Player(18, 18);
                 this.player.ammunition = Infinity;
                 this.ammunitions = [];
-                let monsters = [
-                    "antlered rascal",
-                    "clawed abomination",
-                    "crimson imp",
-                    "Depraved Blackguard",
-                    "fledgling demon",
-                    "floating eye",
-                    "foul gouger",
-                    "grinning gremlin",
-                    "nefarious scamp",
-                    "pit balor",
-                    "pointed demonspawn",
-                    "Rascally Demonling",
-                    "skewering stalker",
-                    "tainted scoundrel",
-                    "warp skull",
-                    "armored goliath",
-                    "beastly impaler",
-                    "blade hellion",
-                    "Blood Drinker",
-                    "bulging incubus",
-                    "dastardly Crusher",
-                    "deadly cambion",
-                    "demonic arachnid",
-                    "ebon astaroth",
-                    "horned brute",
-                    "pronged fury",
-                    "red devil",
-                    "spiked ravager",
-                    "vicious miscreant",
-                    "wicked wretch",
-                    "abyssal baron",
-                    "combusting balrog",
-                    "evil titan",
-                    "gigantic juggernaut",
-                    "infernal scorcher",
-                    "leering leviathan",
-                    "Maleficent Ape",
-                    "malignant gazer",
-                    "Mighty Desolator",
-                    "rabid cerberus",
-                    "Rancorous Bull",
-                    "Sanguine Annihilator",
-                    "Towering Mongrel",
-                    "vile tyrant",
-                    "warp lord",
-                ]
-                this.monsters = this.levelExtra.map(([x, y], i) => new Monster(x, y, monsters[i % monsters.length], 24));
+                
+                this.monsters = this.levelExtra.map(([x, y], i) => new Monster(x, y, monsterNames[i % monsterNames.length], 24));
                 break;
         }
 
