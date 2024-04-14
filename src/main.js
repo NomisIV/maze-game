@@ -27,9 +27,9 @@ function loadLevel(levelIdx, resetMaze) {
     switch (levelIdx % 2) {
         case 0:
             if (resetMaze) {
-                maze = layerMaze(17, 6, 4);
+                maze = layerMaze(17, 4, 6);
                 levelExtra = [[Math.floor(Math.random() * 17), 0]];
-            };
+            }
             graphics = new Graphics("sand");
             player = new Player(8, 23);
 
@@ -38,7 +38,7 @@ function loadLevel(levelIdx, resetMaze) {
             break;
         case 1:
             if (resetMaze) {
-                maze = cellMaze(4, 4, 6, 6);
+                maze = cellMaze(3, 3, 8, 8);
 
                 let pos1 = Math.floor(Math.random() * 24);
                 let pos2 = Math.floor(Math.random() * 24);

@@ -225,33 +225,53 @@ export class Graphics {
         window.image(ammoSprite, x + 0.25, y + 0.25 + float, 0.5, 0.5)
     }
 
+    exploreAt(x, y, maze, dist = 2, seen = new Set()) {
+        if (seen.has([x, y].join(" "))) return;
+        seen.add([x, y].join(" "));
+
+        this.addShown(x, y);
+        if (dist < 1) return;
+
+        if (!maze.hasWall(x + 1, y, x + 1, y + 1))
+            this.exploreAt(x + 1, y, maze, dist - 1, seen);
+        if (!maze.hasWall(x, y + 1, x + 1, y + 1))
+            this.exploreAt(x, y + 1, maze, dist - 1, seen);
+        if (!maze.hasWall(x, y, x, y + 1))
+            this.exploreAt(x - 1, y, maze, dist - 1, seen);
+        if (!maze.hasWall(x, y, x + 1, y))
+            this.exploreAt(x, y - 1, maze, dist - 1, seen);
+    }
+
     drawFogOfWar(maze, player) {
         // return;
 
         window.noStroke();
 
-        this.addShown(player.posX, player.posY);
+        this.exploreAt(player.posX, player.posY, maze);
 
-        for (let x = player.posX; x < player.posX + 3; x++) {
-            let y = player.posY;
-            this.addShown(x, y);
-            if (maze.hasWall(x + 1, y, x + 1, y + 1)) break;
-        }
-        for (let x = player.posX; x > player.posX - 3; x--) {
-            let y = player.posY;
-            this.addShown(x, y);
-            if (maze.hasWall(x, y, x, y + 1)) break;
-        }
-        for (let y = player.posY; y < player.posY + 3; y++) {
-            let x = player.posX;
-            this.addShown(x, y);
-            if (maze.hasWall(x, y + 1, x + 1, y + 1)) break;
-        }
-        for (let y = player.posY; y > player.posY - 3; y--) {
-            let x = player.posX;
-            this.addShown(x, y);
-            if (maze.hasWall(x, y, x + 1, y)) break;
-        }
+
+        // this.addShown(player.posX, player.posY);
+
+        // for (let x = player.posX; x < player.posX + 3; x++) {
+        //     let y = player.posY;
+        //     this.addShown(x, y);
+        //     if (maze.hasWall(x + 1, y, x + 1, y + 1)) break;
+        // }
+        // for (let x = player.posX; x > player.posX - 3; x--) {
+        //     let y = player.posY;
+        //     this.addShown(x, y);
+        //     if (maze.hasWall(x, y, x, y + 1)) break;
+        // }
+        // for (let y = player.posY; y < player.posY + 3; y++) {
+        //     let x = player.posX;
+        //     this.addShown(x, y);
+        //     if (maze.hasWall(x, y + 1, x + 1, y + 1)) break;
+        // }
+        // for (let y = player.posY; y > player.posY - 3; y--) {
+        //     let x = player.posX;
+        //     this.addShown(x, y);
+        //     if (maze.hasWall(x, y, x + 1, y)) break;
+        // }
 
         let minX = Math.floor((this.cameraX || 0) - window.width / 2 / cellSizeScreen());
         let maxX = Math.ceil((this.cameraX || 0) + window.width / 2 / cellSizeScreen());
