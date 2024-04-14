@@ -12,8 +12,57 @@ export function loadGraphics() {
     tilesets["sand"] = window.loadImage("assets/sand-tiles.png");
     tilesets["hell"] = window.loadImage("assets/hell-tiles.png");
     monsterSprites["minotaur"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Rancorous Bull/RancorousBull.png");
-    monsterSprites["bat"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/nefarious scamp/NefariousScamp.png");
-    monsterSprites["dog"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/rabid cerberus/RabidCerberus.png");
+    // monsterSprites["bat"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/nefarious scamp/NefariousScamp.png");
+    // monsterSprites["dog"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/rabid cerberus/RabidCerberus.png");
+
+    monsterSprites["antlered rascal"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/antlered rascal/AntleredRascal.png");
+    monsterSprites["clawed abomination"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/clawed abomination/ClawedAbomination.png");
+    monsterSprites["crimson imp"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/crimson imp/CrimsonImp.png");
+    monsterSprites["Depraved Blackguard"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/Depraved Blackguard/DepravedBlackguard.png");
+    monsterSprites["fledgling demon"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/fledgling demon/FledglingDemon.png");
+    monsterSprites["floating eye"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/floating eye/FloatingEye.png");
+    monsterSprites["foul gouger"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/foul gouger/FoulGouger.png");
+    monsterSprites["grinning gremlin"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/grinning gremlin/GrinningGremlin.png");
+    monsterSprites["nefarious scamp"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/nefarious scamp/NefariousScamp.png");
+    monsterSprites["pit balor"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/pit balor/PitBalor.png");
+    monsterSprites["pointed demonspawn"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/pointed demonspawn/PointedDemonspawn.png");
+    monsterSprites["Rascally Demonling"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/Rascally Demonling/RascallyDemonling.png");
+    monsterSprites["skewering stalker"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/skewering stalker/SkeweringStalker.png");
+    monsterSprites["tainted scoundrel"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/tainted scoundrel/TaintedScoundrel.png");
+    monsterSprites["warp skull"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/warp skull/WarpSkull.png");
+
+    monsterSprites["armored goliath"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/armored goliath/ArmoredGoliath.png");
+    monsterSprites["beastly impaler"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/beastly impaler/BeastlyImpalerIdleSide.png");
+    monsterSprites["blade hellion"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/blade hellion/BladeHellion.png");
+    monsterSprites["Blood Drinker"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/Blood Drinker/BloodDrinker.png");
+    monsterSprites["bulging incubus"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/bulging incubus/BulgingIncubus.png");
+    monsterSprites["dastardly Crusher"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/dastardly Crusher/DastardlyCrusher.png");
+    monsterSprites["deadly cambion"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/deadly cambion/DeadlyCambion.png");
+    monsterSprites["demonic arachnid"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/demonic arachnid/DemonicArachnid.png");
+    monsterSprites["ebon astaroth"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/ebon astaroth/EbonAstaroth.png");
+    monsterSprites["horned brute"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/horned brute/HornedBrute.png");
+    monsterSprites["pronged fury"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/pronged fury/ProngedFury.png");
+    monsterSprites["red devil"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/red devil/RedDevil.png");
+    monsterSprites["spiked ravager"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/spiked ravager/SpikedRavager.png");
+    monsterSprites["vicious miscreant"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/vicious miscreant/ViciousMiscreant.png");
+    monsterSprites["wicked wretch"] = window.loadImage("assets/demon-asset-pack/supporter/supporter asset pack/Supporter Demon Animations/wicked wretch/WickedWretch.png");
+
+    monsterSprites["abyssal baron"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/abyssal baron/AbyssalBaron.png");
+    monsterSprites["combusting balrog"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/combusting balrog/CombustingBalrog.png");
+    monsterSprites["evil titan"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/evil titan/EvilTitan.png");
+    monsterSprites["gigantic juggernaut"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/gigantic juggernaut/GiganticJuggernaut.png");
+    monsterSprites["infernal scorcher"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/infernal scorcher/InfernalScorche.png");
+    monsterSprites["leering leviathan"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/leering leviathan/LeeringLevithan.png");
+    monsterSprites["Maleficent Ape"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Maleficent Ape/MaleficentApe.png");
+    monsterSprites["malignant gazer"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/malignant gazer/malignantgazer.png");
+    monsterSprites["Mighty Desolator"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Mighty Desolator/MightyDesolator.png");
+    monsterSprites["rabid cerberus"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/rabid cerberus/RabidCerberus.png");
+    monsterSprites["Rancorous Bull"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Rancorous Bull/RancorousBull.png");
+    monsterSprites["Sanguine Annihilator"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Sanguine Annihilator/SanguineAnnihilator.png");
+    monsterSprites["Towering Mongrel"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Towering Mongrel/ToweringMongrel.png");
+    monsterSprites["vile tyrant"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/vile tyrant/VileTyrant.png");
+    monsterSprites["warp lord"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/warp lord/WarpLord.png");
+
     pixelFont = window.loadFont("assets/pixel-emulator-font/PixelEmulator-xq08.ttf")
 }
 

@@ -29,7 +29,7 @@ class GameState {
     
                 this.levelExtra = [];
     
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < 20; i++) {
                     let x = 18;
                     let y = 18;
                     while (Math.hypot(x - 18, y - 18) < 8) {
@@ -61,7 +61,7 @@ class GameState {
                 this.graphics = new Graphics("mansion");
                 this.player = new Player(8, 19);
                 this.ammunitions = this.levelExtra.slice();
-                this.monsters = this.levelExtra.map(([x, y]) => new Monster(x, y, "bat", 32));
+                this.monsters = this.levelExtra.map(([x, y]) => new Monster(x, y, "nefarious scamp", 32));
                 break;
             case 2:
                 this.graphics = new Graphics("hell");
@@ -69,7 +69,53 @@ class GameState {
                 this.player = new Player(18, 18);
                 this.player.ammunition = Infinity;
                 this.ammunitions = [];
-                let monsters = ["minotaur", "bat", "dog"]
+                let monsters = [
+                    "antlered rascal",
+                    "clawed abomination",
+                    "crimson imp",
+                    "Depraved Blackguard",
+                    "fledgling demon",
+                    "floating eye",
+                    "foul gouger",
+                    "grinning gremlin",
+                    "nefarious scamp",
+                    "pit balor",
+                    "pointed demonspawn",
+                    "Rascally Demonling",
+                    "skewering stalker",
+                    "tainted scoundrel",
+                    "warp skull",
+                    "armored goliath",
+                    "beastly impaler",
+                    "blade hellion",
+                    "Blood Drinker",
+                    "bulging incubus",
+                    "dastardly Crusher",
+                    "deadly cambion",
+                    "demonic arachnid",
+                    "ebon astaroth",
+                    "horned brute",
+                    "pronged fury",
+                    "red devil",
+                    "spiked ravager",
+                    "vicious miscreant",
+                    "wicked wretch",
+                    "abyssal baron",
+                    "combusting balrog",
+                    "evil titan",
+                    "gigantic juggernaut",
+                    "infernal scorcher",
+                    "leering leviathan",
+                    "Maleficent Ape",
+                    "malignant gazer",
+                    "Mighty Desolator",
+                    "rabid cerberus",
+                    "Rancorous Bull",
+                    "Sanguine Annihilator",
+                    "Towering Mongrel",
+                    "vile tyrant",
+                    "warp lord",
+                ]
                 this.monsters = this.levelExtra.map(([x, y], i) => new Monster(x, y, monsters[i % monsters.length], 24));
                 break;
         }
