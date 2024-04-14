@@ -253,30 +253,6 @@ export class Graphics {
 
         this.exploreAt(player.posX, player.posY, maze);
 
-
-        // this.addShown(player.posX, player.posY);
-
-        // for (let x = player.posX; x < player.posX + 3; x++) {
-        //     let y = player.posY;
-        //     this.addShown(x, y);
-        //     if (maze.hasWall(x + 1, y, x + 1, y + 1)) break;
-        // }
-        // for (let x = player.posX; x > player.posX - 3; x--) {
-        //     let y = player.posY;
-        //     this.addShown(x, y);
-        //     if (maze.hasWall(x, y, x, y + 1)) break;
-        // }
-        // for (let y = player.posY; y < player.posY + 3; y++) {
-        //     let x = player.posX;
-        //     this.addShown(x, y);
-        //     if (maze.hasWall(x, y + 1, x + 1, y + 1)) break;
-        // }
-        // for (let y = player.posY; y > player.posY - 3; y--) {
-        //     let x = player.posX;
-        //     this.addShown(x, y);
-        //     if (maze.hasWall(x, y, x + 1, y)) break;
-        // }
-
         let minX = Math.floor((this.cameraX || 0) - window.width / 2 / cellSizeScreen());
         let maxX = Math.ceil((this.cameraX || 0) + window.width / 2 / cellSizeScreen());
         let minY = Math.floor((this.cameraY || 0) - window.height / 2 / cellSizeScreen());
@@ -319,16 +295,19 @@ export class Graphics {
             window.textAlign(CENTER);
             window.text('You survived', window.width / 2, window.height / 2);
             window.textSize(50);
-            window.text('Press Enter to go to next level', window.width / 2, window.height / 2 + 100);
+            window.text('Press Enter to return to the menu', window.width / 2, window.height / 2 + 100);
         }
-        window.textFont(pixelFont);
-        window.textSize(100);
-        window.fill('yellow');
-        window.textAlign(CENTER);
-        window.text('Minotaur Hunter', window.width / 2, window.height / 2);
-        window.textSize(50);
-        window.text('Press 1 for "Minotaur Maze"', window.width / 2, window.height / 2 + 100);
-        window.text('Press 2 for "Luigi\'s Mansion"', window.width / 2, window.height / 2 + 200);
-        window.text('Press 3 for "Literal Hell"', window.width / 2, window.height / 2 + 300);
     }
+}
+
+export function drawMainMenu() {
+    window.textFont(pixelFont);
+    window.textSize(100);
+    window.fill('yellow');
+    window.textAlign(CENTER);
+    window.text('Minotaur Hunter', window.width / 2, window.height / 2 - 100);
+    window.textSize(50);
+    window.text('Press 1 for "Minotaur Maze"', window.width / 2, window.height / 2);
+    window.text('Press 2 for "Luigi\'s Mansion"', window.width / 2, window.height / 2 + 100);
+    window.text('Press 3 for "Literal Hell"', window.width / 2, window.height / 2 + 200);
 }

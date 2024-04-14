@@ -1,5 +1,5 @@
 import { PLAYER_SPEED } from "./constants.js";
-import { Graphics, loadGraphics } from "./graphics.js";
+import { Graphics, drawMainMenu, loadGraphics } from "./graphics.js";
 import { cellMaze, layerMaze } from "./maze.js";
 import { Monster } from "./monster.js";
 import { Player } from "./player.js";
@@ -193,7 +193,7 @@ class GameState {
     }
 }
 
-let gameState;
+let gameState = null;
 let levelIdx = 0;
 
 window.preload = () => {
@@ -202,8 +202,6 @@ window.preload = () => {
 }
 
 window.setup = () => {
-    gameState = new GameState(0);
-
     window.createCanvas(window.innerWidth, window.innerHeight);
 
 };
@@ -213,22 +211,43 @@ window.windowResized = () => {
 }
 
 window.draw = () => {
-    gameState.draw();
+    if (gameState !== null) {
+        gameState.draw();
+    } else {
+        window.background(0, 0, 0);
+        drawMainMenu();
+    }
 };
 
 window.keyPressed = () => {
     console.log("Pressed: :", window.keyCode);
     switch (window.keyCode) {
         case 13:
-            if (gameState.monsters.every((monster) => monster.isDead))
-                gameState = new GameState(++levelIdx);
+            if (gameState !== null && gameState.monsters.every((monster) => monster.isDead))
+                gameState = null;
+            break;
+        case 49:
+            if (gameState === null)
+                gameState = new GameState(levelIdx = 0);
+            break;
+        case 50:
+            if (gameState === null)
+                gameState = new GameState(levelIdx = 1);
+            break;
+        case 51:
+            if (gameState === null)
+                gameState = new GameState(levelIdx = 2);
             break;
         default:
-            gameState.keyPressed(window.keyCode);
+            if (gameState !== null) {
+                gameState.keyPressed(window.keyCode);
+            }
             break;
     }
 };
 window.keyReleased = () => {
     console.log("Released: :", window.keyCode);
-    gameState.keyReleased(window.keyCode);
+    if (gameState !== null) {
+        gameState.keyReleased(window.keyCode);
+    }
 };
