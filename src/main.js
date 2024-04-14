@@ -7,9 +7,8 @@ import { Player } from "./player.js";
 let maze;
 let graphics;
 let player;
-let ammunitions;
-let startPos;
-let minotaur;
+let ammunitions = [];
+let minotaurs = [];
 
 let moveCooldown;
 let keyStack = [];
@@ -23,9 +22,8 @@ function resetGame(resetMaze) {
     if (resetMaze) maze = new Maze(8, 8, 4, 4);
     graphics = new Graphics("mansion");
     player = new Player(8, 19);
-    startPos = [player.posX, player.posY];
     ammunitions = [[8, 17], [8, 16]];
-    minotaur = null;
+    minotaurs = [new Minotaur(8, 22), new Minotaur(8, 23)];
     moveCooldown = 0;
 }
 
@@ -42,9 +40,12 @@ window.windowResized = () => {
 
 window.draw = () => {
     // Game logic
-
-    if (frameCount % MINOTAUR_SPEED === 0 && minotaur !== null && !minotaur.isDead) {
-        minotaur.stepTowardsPlayer(player, maze);
+    if (frameCount % MINOTAUR_SPEED === 0) {
+        for (let minotaur of minotaurs) {
+            if (!minotaur.isDead) {
+                minotaur.stepTowardsPlayer(player, maze);
+            }
+        }
     }
 
     if (moveCooldown === 0 && keyStack.length > 0 && !player.isDead) {
@@ -89,7 +90,7 @@ window.draw = () => {
         }
     }
 
-    if (minotaur !== null) {
+    for (let minotaur of minotaurs) {
         if (player.posX === minotaur.posX && player.posY === minotaur.posY && !minotaur.isDead) {
             player.isDead = true;
         }
@@ -101,9 +102,7 @@ window.draw = () => {
     graphics.startDrawing();
     graphics.drawMaze(maze);
 
-    if (minotaur !== null) {
-        graphics.drawMinotaur(minotaur);
-    }
+    graphics.drawMinotaurs(minotaurs);
     graphics.drawPlayer(player);
 
     for (let [x, y] of ammunitions) {
@@ -115,7 +114,6 @@ window.draw = () => {
     graphics.endDrawing();
 };
 
-
 window.keyPressed = () => {
     console.log("Pressed: :", window.keyCode);
     switch (window.keyCode) {
@@ -123,7 +121,7 @@ window.keyPressed = () => {
             resetGame(true);
             break;
         case 32:
-            player.fireGun(minotaur, maze);
+            player.fireGun(minotaurs, maze);
             break;
         case 37:
         case 38:
@@ -136,11 +134,6 @@ window.keyPressed = () => {
         case 82:
             resetGame(false);
             break;
-    }
-
-    let [startX, startY] = startPos;
-    if (minotaur === null && Math.abs(startX - player.posX) + Math.abs(startY - player.posY) > 2) {
-        minotaur = new Minotaur(startX, startY);
     }
 };
 window.keyReleased = () => {

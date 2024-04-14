@@ -31,8 +31,7 @@ export class Graphics {
         this.cameraY = null;
         this.playerX = null;
         this.playerY = null;
-        this.minotaurX = null;
-        this.minotaurY = null;
+        this.minotaurPos = [];
         this.shownTiles = new Map();
         this.tileset = tilesets[tilesetName];
     }
@@ -160,38 +159,42 @@ export class Graphics {
         window.image(playerSprite, this.playerX + 0.25, this.playerY + 0.25, 0.5, 0.5, dir * 16, 0, 16, 16);
     }
 
-    drawMinotaur(minotaur) {
-        if (this.minotaurX === null || this.minotaurY === null) {
-            this.minotaurX = minotaur.posX;
-            this.minotaurY = minotaur.posY;
-        }
-
-        let maxDelta = 1 / MOVE_SPEED;
-        let limit = v => Math.min(Math.max(-maxDelta, v), maxDelta);
-        this.minotaurX += limit(minotaur.posX - this.minotaurX);
-        this.minotaurY += limit(minotaur.posY - this.minotaurY);
-
-        if (minotaur.isDead) {
-            window.push();
-            window.translate(roundToPixel(this.minotaurX + 0.5), roundToPixel(this.minotaurY + 0.5));
-            window.rotate(-90);
-            if (minotaur.isLookingLeft) {
-                window.scale(1, -1);
+    drawMinotaurs(minotaurs) {
+        for (let i = 0; i < minotaurs.length; i++) {
+            let minotaur = minotaurs[i];
+            if (i >= this.minotaurPos.length) {
+                this.minotaurPos.push([minotaur.posX, minotaur.posY]);
             }
-            window.image(minotaurSprite, -0.25, -0.25, 0.5, 0.5, 0, 0, 16, 16);
-            window.pop();
-            return;
-        }
+            let [minotaurX, minotaurY] = this.minotaurPos[i];
 
-        let sx = Math.floor(window.frameCount / 60 * 10) % 4 * 16;
-        if (sx == 48) sx = 16;
-        window.push();
-        window.translate(roundToPixel(this.minotaurX + 0.5), roundToPixel(this.minotaurY + 0.5))
-        if (minotaur.isLookingLeft) {
-            window.scale(-1, 1);
+            let maxDelta = 1 / MOVE_SPEED;
+            let limit = v => Math.min(Math.max(-maxDelta, v), maxDelta);
+            minotaurX += limit(minotaur.posX - minotaurX);
+            minotaurY += limit(minotaur.posY - minotaurY);
+            this.minotaurPos[i] = [minotaurX, minotaurY];
+
+            if (minotaur.isDead) {
+                window.push();
+                window.translate(roundToPixel(minotaurX + 0.5), roundToPixel(minotaurY + 0.5));
+                window.rotate(-90);
+                if (minotaur.isLookingLeft) {
+                    window.scale(1, -1);
+                }
+                window.image(minotaurSprite, -0.25, -0.25, 0.5, 0.5, 0, 0, 16, 16);
+                window.pop();
+                continue;
+            }
+
+            let sx = Math.floor(window.frameCount / 60 * 10) % 4 * 16;
+            if (sx == 48) sx = 16;
+            window.push();
+            window.translate(roundToPixel(minotaurX + 0.5), roundToPixel(minotaurY + 0.5))
+            if (minotaur.isLookingLeft) {
+                window.scale(-1, 1);
+            }
+            window.image(minotaurSprite, -0.25, -0.25, 0.5, 0.5, sx, 0, 16, 16);
+            window.pop();
         }
-        window.image(minotaurSprite, -0.25, -0.25, 0.5, 0.5, sx, 0, 16, 16);
-        window.pop();
     }
 
     drawAmmunition(x, y) {
