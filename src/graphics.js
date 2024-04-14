@@ -34,6 +34,10 @@ export class Graphics {
         this.minotaurPos = [];
         this.shownTiles = new Map();
         this.tileset = tilesets[tilesetName];
+
+        this.grayTileset = window.createImage(48, 32);
+        this.grayTileset.copy(this.tileset, 0, 0, 48, 32, 0, 0, 48, 32);
+        this.grayTileset.filter(window.GRAY);
     }
 
     shownTime(x, y) {
@@ -87,10 +91,13 @@ export class Graphics {
         let minY = Math.floor((this.cameraY || 0) - window.height / 2 / cellSizeScreen());
         let maxY = Math.ceil((this.cameraY || 0) + window.height / 2 / cellSizeScreen());
 
-        let tileset = this.tileset;
-
+        
         for (let y = minY; y < maxY; y++) {
             for (let x = minX; x < maxX; x++) {
+                let time = this.shownTime(x, y);
+                if (time <= 0) continue;
+                let tileset = time < FOG_FADE_IN ? this.tileset : this.grayTileset;
+
                 window.push();
                 window.translate(x, y);
 
@@ -172,6 +179,10 @@ export class Graphics {
             minotaurX += limit(minotaur.posX - minotaurX);
             minotaurY += limit(minotaur.posY - minotaurY);
             this.minotaurPos[i] = [minotaurX, minotaurY];
+
+            if (this.shownTime(minotaur.posX, minotaur.posY) > FOG_FADE_IN) {
+                continue;
+            }
 
             if (minotaur.isDead) {
                 window.push();
