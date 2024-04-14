@@ -8,13 +8,14 @@ export class Monster {
         this.speed = speed;
     }
 
-    stepTowardsPlayer(player, maze) {
+    stepTowardsPlayer(player, maze, isOccupied) {
         const [x, y] = this._bfs(maze, player.posX, player.posY, this.posX, this.posY);
         if (x < this.posX) {
             this.isLookingLeft = true;
         } else if (this.posX < x) {
             this.isLookingLeft = false;
         }
+        if (isOccupied(x, y)) return;
         this.posX = x;
         this.posY = y;
     }

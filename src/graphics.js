@@ -12,6 +12,7 @@ export function loadGraphics() {
     tilesets["sand"] = window.loadImage("assets/sand-tiles.png");
     monsterSprites["minotaur"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Rancorous Bull/RancorousBull.png");
     monsterSprites["bat"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/nefarious scamp/NefariousScamp.png");
+    monsterSprites["dog"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/rabid cerberus/RabidCerberus.png");
     pixelFont = window.loadFont("assets/pixel-emulator-font/PixelEmulator-xq08.ttf")
 }
 

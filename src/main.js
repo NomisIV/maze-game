@@ -24,7 +24,7 @@ function loadLevel(levelIdx, resetMaze) {
 
     let oldGraphics = graphics;
 
-    switch (levelIdx % 2) {
+    switch (levelIdx % 3) {
         case 0:
             if (resetMaze) {
                 maze = layerMaze(17, 4, 6);
@@ -42,7 +42,6 @@ function loadLevel(levelIdx, resetMaze) {
 
                 let pos1 = Math.floor(Math.random() * 24);
                 let pos2 = Math.floor(Math.random() * 24);
-                if ((pos1 ^ pos2) & 1) pos2 ^= 1;
                 levelExtra = Math.random() < 0.5 ? [[pos1, 0], [pos2, 23]] : [[0, pos1], [23, pos2]];
             }
             graphics = new Graphics("mansion");
@@ -51,6 +50,32 @@ function loadLevel(levelIdx, resetMaze) {
             ammunitions = levelExtra.slice();
             monsters = levelExtra.map(([x, y]) => new Monster(x, y, "bat", 32));
             break;
+        case 2:
+            if (resetMaze) {
+                maze = cellMaze(6, 6, 6, 6);
+
+                levelExtra = [];
+
+                for (let i = 0; i < 10; i++) {
+                    let x = 18;
+                    let y = 18;
+                    while (Math.hypot(x - 18, y - 18) < 8) {
+                        x = Math.floor(Math.random() * maze.width);
+                        y = Math.floor(Math.random() * maze.height);
+                    }
+                    levelExtra.push([x, y]);
+                }
+            }
+            graphics = new Graphics("mansion");
+            player = new Player(18, 18);
+            player.ammunition = Infinity;
+            ammunitions = [];
+
+            monsters = levelExtra.map(([x, y]) => new Monster(x, y, "dog", 24));
+
+            // ammunitions = levelExtra.slice();
+            // monsters = levelExtra.map(([x, y]) => new Monster(x, y, "bat", 32));
+            break;
     }
 
     if (!resetMaze) {
@@ -58,7 +83,7 @@ function loadLevel(levelIdx, resetMaze) {
     }
 }
 
-let currentLevel = 0;
+let currentLevel = 2;
 function resetGame(resetMaze) {
     if (resetMaze) currentLevel += 1;
     loadLevel(currentLevel, resetMaze);
@@ -77,10 +102,12 @@ window.windowResized = () => {
 
 window.draw = () => {
     // Game logic
-    for (let monster of monsters) {
+    for (let i = 0; i < monsters.length; i++) {
+        let monster = monsters[i];
         if (frameCount % monster.speed === 0) {
             if (!monster.isDead) {
-                monster.stepTowardsPlayer(player, maze);
+                let isOccupied = (x, y) => monsters.some((m, j) => j !== i && !m.isDead && m.posX === x && m.posY === y);
+                monster.stepTowardsPlayer(player, maze, isOccupied);
             }
         }
     }
