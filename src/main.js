@@ -150,7 +150,7 @@ window.draw = () => {
 
     graphics.endDrawing();
 
-    graphics.drawUI(player);
+    graphics.drawUI(player, monsters);
 };
 
 window.keyPressed = () => {

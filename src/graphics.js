@@ -3,6 +3,7 @@ import { CELL_SIZE, FOG_FADE_IN, FOG_FADE_OUT, MOVE_SPEED } from "./constants.js
 let playerSprite, ammoSprite;
 let tilesets = {};
 let monsterSprites = {};
+let pixelFont;
 
 export function loadGraphics() {
     playerSprite = window.loadImage("assets/player.png");
@@ -11,6 +12,7 @@ export function loadGraphics() {
     tilesets["sand"] = window.loadImage("assets/sand-tiles.png");
     monsterSprites["minotaur"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Rancorous Bull/RancorousBull.png");
     monsterSprites["bat"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/nefarious scamp/NefariousScamp.png");
+    pixelFont = window.loadFont("assets/pixel-emulator-font/PixelEmulator-xq08.ttf")
 }
 
 function cellSizeScreen() {
@@ -294,9 +296,28 @@ export class Graphics {
         }
     }
 
-    drawUI(player) {
+    drawUI(player, monsters) {
         window.noSmooth();
-        if (player.hasAmmonution)
+        if (player.hasAmmonution) {
             window.image(ammoSprite, window.width - 128, window.height - 128, 128, 128);
+        }
+        if (player.isDead) {
+            window.textFont(pixelFont);
+            window.textSize(100);
+            window.fill('yellow');
+            window.textAlign(CENTER);
+            window.text('You died', window.width / 2, window.height / 2);
+            window.textSize(50);
+            window.text('Press R to retry', window.width / 2, window.height / 2 + 100);
+        }
+        if (monsters.every((monster) => monster.isDead)) {
+            window.textFont(pixelFont);
+            window.textSize(100);
+            window.fill('yellow');
+            window.textAlign(CENTER);
+            window.text('You survived', window.width / 2, window.height / 2);
+            window.textSize(50);
+            window.text('Press Enter to go to next level', window.width / 2, window.height / 2 + 100);
+        }
     }
 }
