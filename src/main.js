@@ -47,7 +47,7 @@ window.draw = () => {
         minotaur.stepTowardsPlayer(player, maze);
     }
 
-    if (moveCooldown === 0 && keyStack.length > 0) {
+    if (moveCooldown === 0 && keyStack.length > 0 && !player.isDead) {
         for (let i = keyStack.length - 1; i >= 0; i--) {
             let dir = null;
 
@@ -86,16 +86,23 @@ window.draw = () => {
         ammunition = null;
     }
 
+    if (minotaur !== null) {
+        if (player.posX === minotaur.posX && player.posY === minotaur.posY && !minotaur.isDead) {
+            player.isDead = true;
+        }
+    }
+
     graphics.moveCamera();
 
     // Drawing
     graphics.startDrawing();
     graphics.drawMaze(maze);
-    graphics.drawPlayer(player);
 
     if (minotaur !== null) {
         graphics.drawMinotaur(minotaur);
     }
+    graphics.drawPlayer(player);
+
     if (ammunition !== null) {
         graphics.drawAmmunition(ammunition[0], ammunition[1]);
     }

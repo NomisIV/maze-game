@@ -144,6 +144,18 @@ export class Graphics {
         this.playerX += limit(player.posX - this.playerX);
         this.playerY += limit(player.posY - this.playerY);
 
+        if (player.isDead) {
+            window.push();
+            window.translate(roundToPixel(this.playerX + 0.5), roundToPixel(this.playerY + 0.5));
+            window.rotate(-90);
+            if (player.dir === "left") {
+                window.scale(1, -1);
+            }
+            window.image(playerSprite, -0.25, -0.25, 0.5, 0.5, 0, 0, 16, 16);
+            window.pop();
+            return;
+        }
+
         let dir = ["right", "left", "up", "down"].indexOf(player.direction);
         window.image(playerSprite, this.playerX + 0.25, this.playerY + 0.25, 0.5, 0.5, dir * 16, 0, 16, 16);
     }

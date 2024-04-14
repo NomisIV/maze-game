@@ -4,6 +4,7 @@ export class Player {
         this.posY = y;
         this.direction = "right";
         this.hasAmmunition = false;
+        this.isDead = false;
     }
 
     move(maze, stepX, stepY) {
@@ -37,7 +38,7 @@ export class Player {
     }
 
     fireGun(minotaur, maze) {
-        if (!this.hasAmmunition) return;
+        if (!this.hasAmmunition || this.isDead) return;
 
         let x = this.posX;
         let y = this.posY;
