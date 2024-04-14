@@ -66,15 +66,12 @@ function loadLevel(levelIdx, resetMaze) {
                     levelExtra.push([x, y]);
                 }
             }
-            graphics = new Graphics("mansion");
+            graphics = new Graphics("hell");
             player = new Player(18, 18);
             player.ammunition = Infinity;
             ammunitions = [];
 
             monsters = levelExtra.map(([x, y]) => new Monster(x, y, "dog", 24));
-
-            // ammunitions = levelExtra.slice();
-            // monsters = levelExtra.map(([x, y]) => new Monster(x, y, "bat", 32));
             break;
     }
 

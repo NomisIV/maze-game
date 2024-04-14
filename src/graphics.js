@@ -10,6 +10,7 @@ export function loadGraphics() {
     ammoSprite = window.loadImage("assets/shotgun-shell.png");
     tilesets["mansion"] = window.loadImage("assets/mansion-tiles.png");
     tilesets["sand"] = window.loadImage("assets/sand-tiles.png");
+    tilesets["hell"] = window.loadImage("assets/hell-tiles.png");
     monsterSprites["minotaur"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Rancorous Bull/RancorousBull.png");
     monsterSprites["bat"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/nefarious scamp/NefariousScamp.png");
     monsterSprites["dog"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/rabid cerberus/RabidCerberus.png");
