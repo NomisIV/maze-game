@@ -11,7 +11,7 @@ class GameState {
 
         switch (levelIdx % 3) {
             case 0:
-                this.maze = layerMaze(17, 4, 6);
+                this.maze = layerMaze(17, 6, 4);
                 this.levelExtra = [[Math.floor(Math.random() * 17), 0]];
                 break;
 
@@ -93,15 +93,19 @@ class GameState {
 
                 switch (this.keyStack[i]) {
                     case 37: // LeftArrow
+                    case 64: // A
                         dir = [-1, 0];
                         break;
                     case 38: // UpArrow
+                    case 87: // W
                         dir = [0, -1];
                         break;
                     case 39: // RightArrow
+                    case 68: // D
                         dir = [1, 0];
                         break;
                     case 40: // DownArrow
+                    case 83: // S
                         dir = [0, 1];
                         break;
                 }
@@ -168,6 +172,10 @@ class GameState {
             case 38:
             case 39:
             case 40:
+            case 64:
+            case 68:
+            case 83:
+            case 87:
                 if (this.keyStack.indexOf(keyCode) < 0) {
                     this.keyStack.push(keyCode);
                 }
@@ -184,6 +192,10 @@ class GameState {
             case 38:
             case 39:
             case 40:
+            case 64:
+            case 68:
+            case 83:
+            case 87:
                 let idx = this.keyStack.indexOf(keyCode);
                 if (idx >= 0) {
                     this.keyStack.splice(idx, 1);
@@ -225,6 +237,9 @@ window.keyPressed = () => {
         case 13:
             if (gameState !== null && gameState.monsters.every((monster) => monster.isDead))
                 gameState = null;
+            break;
+        case 27:
+            gameState = null;
             break;
         case 49:
             if (gameState === null)
