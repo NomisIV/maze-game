@@ -321,5 +321,14 @@ export class Graphics {
             window.textSize(50);
             window.text('Press Enter to go to next level', window.width / 2, window.height / 2 + 100);
         }
+        window.textFont(pixelFont);
+        window.textSize(100);
+        window.fill('yellow');
+        window.textAlign(CENTER);
+        window.text('Minotaur Hunter', window.width / 2, window.height / 2);
+        window.textSize(50);
+        window.text('Press 1 for "Minotaur Maze"', window.width / 2, window.height / 2 + 100);
+        window.text('Press 2 for "Luigi\'s Mansion"', window.width / 2, window.height / 2 + 200);
+        window.text('Press 3 for "Literal Hell"', window.width / 2, window.height / 2 + 300);
     }
 }
