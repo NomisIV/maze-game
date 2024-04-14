@@ -37,16 +37,16 @@ export class Player {
         return canMove;
     }
 
-    fireGun(minotaurs, maze) {
+    fireGun(monsters, maze) {
         if (this.ammunition === 0 || this.isDead) return;
         this.ammunition -= 1;
 
         let x = this.posX;
         let y = this.posY;
         for (let i = 0; i < 100; i++) {
-            for (let minotaur of minotaurs) {
-                if (minotaur.posX === x && minotaur.posY === y && !minotaur.isDead) {
-                    minotaur.isDead = true;
+            for (let monster of monsters) {
+                if (monster.posX === x && monster.posY === y && !monster.isDead) {
+                    monster.isDead = true;
                     return;
                 }
             }

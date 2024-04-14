@@ -1,9 +1,10 @@
-export class Minotaur {
-    constructor(x, y) {
+export class Monster {
+    constructor(x, y, type) {
         this.posX = x;
         this.posY = y;
         this.isLookingLeft = false;
         this.isDead = false;
+        this.type = type;
     }
 
     stepTowardsPlayer(player, maze) {

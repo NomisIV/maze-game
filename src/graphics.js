@@ -1,14 +1,16 @@
 import { CELL_SIZE, FOG_FADE_IN, FOG_FADE_OUT, MOVE_SPEED } from "./constants.js";
 
-let playerSprite, minotaurSprite, ammoSprite;
+let playerSprite, ammoSprite;
 let tilesets = {};
+let monsterSprites = {};
 
 export function loadGraphics() {
     playerSprite = window.loadImage("assets/player.png");
-    minotaurSprite = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Rancorous Bull/RancorousBull.png");
     ammoSprite = window.loadImage("assets/shotgun-shell.png");
     tilesets["mansion"] = window.loadImage("assets/mansion-tiles.png");
     tilesets["sand"] = window.loadImage("assets/sand-tiles.png");
+    monsterSprites["minotaur"] = window.loadImage("assets/demon-asset-pack/premium/premium asset pack/Premium Demon Animations/Rancorous Bull/RancorousBull.png");
+    monsterSprites["bat"] = window.loadImage("assets/demon-asset-pack/basic/basic asset pack/Basic Demon Animations/nefarious scamp/NefariousScamp.png");
 }
 
 function cellSizeScreen() {
@@ -32,7 +34,7 @@ export class Graphics {
         this.cameraY = null;
         this.playerX = null;
         this.playerY = null;
-        this.minotaurPos = [];
+        this.monsterPos = [];
         this.shownTiles = new Map();
         this.tileset = tilesets[tilesetName];
 
@@ -173,44 +175,47 @@ export class Graphics {
         window.image(playerSprite, this.playerX + 0.25, this.playerY + 0.25, 0.5, 0.5, dir * 16, 0, 16, 16);
     }
 
-    drawMinotaurs(minotaurs) {
-        for (let i = 0; i < minotaurs.length; i++) {
-            let minotaur = minotaurs[i];
-            if (i >= this.minotaurPos.length) {
-                this.minotaurPos.push([minotaur.posX, minotaur.posY]);
+    drawMonsters(monsters) {
+        for (let i = 0; i < monsters.length; i++) {
+            let monster = monsters[i];
+            if (i >= this.monsterPos.length) {
+                this.monsterPos.push([monster.posX, monster.posY]);
             }
-            let [minotaurX, minotaurY] = this.minotaurPos[i];
+            let [monsterX, monsterY] = this.monsterPos[i];
 
             let maxDelta = 1 / MOVE_SPEED;
             let limit = v => Math.min(Math.max(-maxDelta, v), maxDelta);
-            minotaurX += limit(minotaur.posX - minotaurX);
-            minotaurY += limit(minotaur.posY - minotaurY);
-            this.minotaurPos[i] = [minotaurX, minotaurY];
+            monsterX += limit(monster.posX - monsterX);
+            monsterY += limit(monster.posY - monsterY);
+            this.monsterPos[i] = [monsterX, monsterY];
 
-            if (this.shownTime(minotaur.posX, minotaur.posY) > FOG_FADE_IN) {
+            if (this.shownTime(monster.posX, monster.posY) > FOG_FADE_IN) {
                 continue;
             }
 
-            if (minotaur.isDead) {
+            if (!(monster.type in monsterSprites)) continue;
+            let monsterSprite = monsterSprites[monster.type];
+
+            if (monster.isDead) {
                 window.push();
-                window.translate(roundToPixel(minotaurX + 0.5), roundToPixel(minotaurY + 0.5));
+                window.translate(roundToPixel(monsterX + 0.5), roundToPixel(monsterY + 0.5));
                 window.rotate(-90);
-                if (minotaur.isLookingLeft) {
+                if (monster.isLookingLeft) {
                     window.scale(1, -1);
                 }
-                window.image(minotaurSprite, -0.25, -0.25, 0.5, 0.5, 0, 0, 16, 16);
+                window.image(monsterSprite, -0.25, -0.25, 0.5, 0.5, 0, 0, 16, 16);
                 window.pop();
                 continue;
             }
 
             let sx = Math.floor(window.frameCount / 60 * 10) % 4 * 16;
-            if (sx == 48) sx = 16;
+            if (sx === 48 && monster.type === "minotaur") sx = 16;
             window.push();
-            window.translate(roundToPixel(minotaurX + 0.5), roundToPixel(minotaurY + 0.5))
-            if (minotaur.isLookingLeft) {
+            window.translate(roundToPixel(monsterX + 0.5), roundToPixel(monsterY + 0.5))
+            if (monster.isLookingLeft) {
                 window.scale(-1, 1);
             }
-            window.image(minotaurSprite, -0.25, -0.25, 0.5, 0.5, sx, 0, 16, 16);
+            window.image(monsterSprite, -0.25, -0.25, 0.5, 0.5, sx, 0, 16, 16);
             window.pop();
         }
     }

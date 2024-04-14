@@ -1,14 +1,14 @@
-import { MINOTAUR_SPEED, PLAYER_SPEED } from "./constants.js";
+import { MONSTER_SPEED, PLAYER_SPEED } from "./constants.js";
 import { Graphics, loadGraphics } from "./graphics.js";
 import { cellMaze, layerMaze } from "./maze.js";
-import { Minotaur } from "./minotaur.js";
+import { Monster } from "./monster.js";
 import { Player } from "./player.js";
 
 let maze;
 let graphics;
 let player;
 let ammunitions = [];
-let minotaurs = [];
+let monsters = [];
 
 let moveCooldown;
 let keyStack = [];
@@ -34,7 +34,7 @@ function loadLevel(levelIdx, resetMaze) {
             player = new Player(8, 23);
 
             ammunitions = levelExtra.slice();
-            minotaurs = [new Minotaur(8, 30)];
+            monsters = [new Monster(8, 30, "minotaur")];
             break;
         case 1:
             if (resetMaze) {
@@ -49,7 +49,7 @@ function loadLevel(levelIdx, resetMaze) {
             player = new Player(8, 19);
 
             ammunitions = levelExtra.slice();
-            minotaurs = levelExtra.map(([x, y]) => new Minotaur(x, y));
+            monsters = levelExtra.map(([x, y]) => new Monster(x, y, "bat"));
             break;
     }
 
@@ -77,10 +77,10 @@ window.windowResized = () => {
 
 window.draw = () => {
     // Game logic
-    if (frameCount % MINOTAUR_SPEED === 0) {
-        for (let minotaur of minotaurs) {
-            if (!minotaur.isDead) {
-                minotaur.stepTowardsPlayer(player, maze);
+    if (frameCount % MONSTER_SPEED === 0) {
+        for (let monster of monsters) {
+            if (!monster.isDead) {
+                monster.stepTowardsPlayer(player, maze);
             }
         }
     }
@@ -127,8 +127,8 @@ window.draw = () => {
         }
     }
 
-    for (let minotaur of minotaurs) {
-        if (player.posX === minotaur.posX && player.posY === minotaur.posY && !minotaur.isDead) {
+    for (let monster of monsters) {
+        if (player.posX === monster.posX && player.posY === monster.posY && !monster.isDead) {
             player.isDead = true;
         }
     }
@@ -139,7 +139,7 @@ window.draw = () => {
     graphics.startDrawing();
     graphics.drawMaze(maze);
 
-    graphics.drawMinotaurs(minotaurs);
+    graphics.drawMonsters(monsters);
     graphics.drawPlayer(player);
 
     for (let [x, y] of ammunitions) {
@@ -158,7 +158,7 @@ window.keyPressed = () => {
             resetGame(true);
             break;
         case 32:
-            player.fireGun(minotaurs, maze);
+            player.fireGun(monsters, maze);
             break;
         case 37:
         case 38:
