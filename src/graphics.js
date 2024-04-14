@@ -40,6 +40,7 @@ export class Graphics {
         this.playerY = null;
         this.monsterPos = [];
         this.shownTiles = new Map();
+        this.showAll = false;
         this.tileset = tilesets[tilesetName];
 
         this.grayTileset = window.createImage(48, 32);
@@ -108,8 +109,8 @@ export class Graphics {
         for (let y = minY; y < maxY; y++) {
             for (let x = minX; x < maxX; x++) {
                 let time = this.shownTime(x, y);
-                if (time <= 0) continue;
-                let tileset = time < FOG_FADE_IN ? this.tileset : this.grayTileset;
+                if (time <= 0 && !this.showAll) continue;
+                let tileset = time < FOG_FADE_IN || this.showAll ? this.tileset : this.grayTileset;
 
                 window.push();
                 window.translate(x, y);
@@ -193,7 +194,7 @@ export class Graphics {
             monsterY += limit(monster.posY - monsterY);
             this.monsterPos[i] = [monsterX, monsterY];
 
-            if (this.shownTime(monster.posX, monster.posY) > FOG_FADE_IN) {
+            if (this.shownTime(monster.posX, monster.posY) > FOG_FADE_IN && !this.showAll) {
                 continue;
             }
 
@@ -247,7 +248,6 @@ export class Graphics {
     }
 
     drawFogOfWar(maze, player) {
-        // return;
 
         window.noStroke();
 
@@ -260,6 +260,9 @@ export class Graphics {
 
         for (let y = minY; y < maxY; y++) {
             for (let x = minX; x < maxX; x++) {
+                if (this.showAll && x >= 0 && y >= 0 && x < maze.width && y < maze.height)
+                    continue;
+
                 let time = this.shownTime(x, y);
                 if (time < FOG_FADE_OUT) {
                     let alpha = 1 - time / FOG_FADE_OUT;

@@ -25,7 +25,7 @@ class GameState {
 
                 break;
             case 2:
-                this.maze = cellMaze(6, 6, 6, 6);
+                this.maze = cellMaze(2, 2, 18, 18);
     
                 this.levelExtra = [];
     
@@ -65,6 +65,7 @@ class GameState {
                 break;
             case 2:
                 this.graphics = new Graphics("hell");
+                this.graphics.showAll = true;
                 this.player = new Player(18, 18);
                 this.player.ammunition = Infinity;
                 this.ammunitions = [];
