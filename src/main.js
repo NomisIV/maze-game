@@ -7,7 +7,7 @@ import { Player } from "./player.js";
 let maze;
 let graphics;
 let player;
-let ammunition;
+let ammunitions;
 let startPos;
 let minotaur;
 
@@ -24,7 +24,7 @@ function resetGame(resetMaze) {
     graphics = new Graphics("mansion");
     player = new Player(8, 19);
     startPos = [player.posX, player.posY];
-    ammunition = [8, 17];
+    ammunitions = [[8, 17], [8, 16]];
     minotaur = null;
     moveCooldown = 0;
 }
@@ -81,9 +81,12 @@ window.draw = () => {
         moveCooldown -= 1;
     }
 
-    if (ammunition !== null && player.posX === ammunition[0] && player.posY === ammunition[1]) {
-        player.hasAmmunition = true;
-        ammunition = null;
+    for (let i = ammunitions.length - 1; i >= 0; i--) {
+        let [x, y] = ammunitions[i];
+        if (player.posX === x && player.posY === y) {
+            player.ammunition += 1;
+            ammunitions.splice(i, 1);
+        }
     }
 
     if (minotaur !== null) {
@@ -103,8 +106,8 @@ window.draw = () => {
     }
     graphics.drawPlayer(player);
 
-    if (ammunition !== null) {
-        graphics.drawAmmunition(ammunition[0], ammunition[1]);
+    for (let [x, y] of ammunitions) {
+        graphics.drawAmmunition(x, y);
     }
 
     graphics.drawFogOfWar(maze, player);

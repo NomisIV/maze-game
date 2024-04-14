@@ -3,7 +3,7 @@ export class Player {
         this.posX = x;
         this.posY = y;
         this.direction = "right";
-        this.hasAmmunition = false;
+        this.ammunition = 0;
         this.isDead = false;
     }
 
@@ -38,7 +38,8 @@ export class Player {
     }
 
     fireGun(minotaur, maze) {
-        if (!this.hasAmmunition || this.isDead) return;
+        if (this.ammunition === 0 || this.isDead) return;
+        this.ammunition -= 1;
 
         let x = this.posX;
         let y = this.posY;
