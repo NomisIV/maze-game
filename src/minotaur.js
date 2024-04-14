@@ -3,6 +3,7 @@ export class Minotaur {
         this.posX = x;
         this.posY = y;
         this.isLookingLeft = false;
+        this.isDead = false;
     }
 
     stepTowardsPlayer(player, maze) {

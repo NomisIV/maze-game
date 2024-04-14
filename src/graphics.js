@@ -34,7 +34,6 @@ export class Graphics {
         this.minotaurX = null;
         this.minotaurY = null;
         this.shownTiles = new Map();
-        console.log(tilesets[tilesetName]);
         this.tileset = tilesets[tilesetName];
     }
 
@@ -160,15 +159,26 @@ export class Graphics {
         this.minotaurX += limit(minotaur.posX - this.minotaurX);
         this.minotaurY += limit(minotaur.posY - this.minotaurY);
 
+        if (minotaur.isDead) {
+            window.push();
+            window.translate(roundToPixel(this.minotaurX + 0.5), roundToPixel(this.minotaurY + 0.5));
+            window.rotate(-90);
+            if (minotaur.isLookingLeft) {
+                window.scale(1, -1);
+            }
+            window.image(minotaurSprite, -0.25, -0.25, 0.5, 0.5, 0, 0, 16, 16);
+            window.pop();
+            return;
+        }
+
         let sx = Math.floor(window.frameCount / 60 * 10) % 4 * 16;
         if (sx == 48) sx = 16;
         window.push();
-        window.translate(roundToPixel(this.minotaurX + 0.25), roundToPixel(this.minotaurY + 0.25))
+        window.translate(roundToPixel(this.minotaurX + 0.5), roundToPixel(this.minotaurY + 0.5))
         if (minotaur.isLookingLeft) {
             window.scale(-1, 1);
-            window.translate(-0.5, 0)
         }
-        window.image(minotaurSprite, 0, 0, 0.5, 0.5, sx, 0, 16, 16);
+        window.image(minotaurSprite, -0.25, -0.25, 0.5, 0.5, sx, 0, 16, 16);
         window.pop();
     }
 

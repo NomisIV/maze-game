@@ -24,7 +24,7 @@ function resetGame(resetMaze) {
     graphics = new Graphics("mansion");
     player = new Player(8, 19);
     startPos = [player.posX, player.posY];
-    ammunition = [8, 0];
+    ammunition = [8, 17];
     minotaur = null;
     moveCooldown = 0;
 }
@@ -43,7 +43,7 @@ window.windowResized = () => {
 window.draw = () => {
     // Game logic
 
-    if (frameCount % MINOTAUR_SPEED === 0 && minotaur !== null) {
+    if (frameCount % MINOTAUR_SPEED === 0 && minotaur !== null && !minotaur.isDead) {
         minotaur.stepTowardsPlayer(player, maze);
     }
 
@@ -113,10 +113,7 @@ window.keyPressed = () => {
             resetGame(true);
             break;
         case 32:
-            if (player.hasAmmunition) {
-                player.hasAmmunition = false;
-                console.info("BANG!");
-            }
+            player.fireGun(minotaur, maze);
             break;
         case 37:
         case 38:

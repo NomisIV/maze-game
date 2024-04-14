@@ -1,45 +1,75 @@
 export class Player {
-  constructor(x, y) {
-    this.posX = x;
-    this.posY = y;
-    this.direction = "right";
-    this.hasAmmunition = false;
-  }
-
-  move(maze, stepX, stepY) {
-    let canMove = true;
-
-    switch (true) {
-      case stepY === 1:
-        canMove = !maze.hasWall(this.posX, this.posY + 1, this.posX + 1, this.posY + 1)
-        this.direction = "down";
-        break;
-      case stepY === -1:
-        canMove = !maze.hasWall(this.posX, this.posY, this.posX + 1, this.posY)
-        this.direction = "up";
-        break;
-      case stepX === 1:
-        canMove = !maze.hasWall(this.posX + 1, this.posY, this.posX + 1, this.posY + 1)
+    constructor(x, y) {
+        this.posX = x;
+        this.posY = y;
         this.direction = "right";
-        break;
-      case stepX === -1:
-        canMove = !maze.hasWall(this.posX, this.posY, this.posX, this.posY + 1)
-        this.direction = "left";
-        break;
+        this.hasAmmunition = false;
     }
 
-    const newPosX = this.posX + stepX
-    const newPosY = this.posY + stepY
+    move(maze, stepX, stepY) {
+        let canMove = true;
 
-    if (!(newPosX >= 0 && newPosX < maze.width && newPosY >= 0 && newPosY < maze.height)) {
-      canMove = false
+        switch (true) {
+            case stepY === 1:
+                canMove = !maze.hasWall(this.posX, this.posY + 1, this.posX + 1, this.posY + 1)
+                this.direction = "down";
+                break;
+            case stepY === -1:
+                canMove = !maze.hasWall(this.posX, this.posY, this.posX + 1, this.posY)
+                this.direction = "up";
+                break;
+            case stepX === 1:
+                canMove = !maze.hasWall(this.posX + 1, this.posY, this.posX + 1, this.posY + 1)
+                this.direction = "right";
+                break;
+            case stepX === -1:
+                canMove = !maze.hasWall(this.posX, this.posY, this.posX, this.posY + 1)
+                this.direction = "left";
+                break;
+        }
+
+        if (canMove) {
+            this.posX += stepX;
+            this.posY += stepY;
+        }
+
+        return canMove;
     }
 
-    if (canMove) {
-      this.posX = newPosX
-      this.posY = newPosY
-    }
+    fireGun(minotaur, maze) {
+        if (!this.hasAmmunition) return;
 
-    return canMove;
-  }
+        let x = this.posX;
+        let y = this.posY;
+        for (let i = 0; i < 100; i++) {
+            console.info(x, y, minotaur.posX, minotaur.posY);
+
+            if (minotaur.posX === x && minotaur.posY === y && !minotaur.isDead) {
+                minotaur.isDead = true;
+                break;
+            }
+
+            let blocked = false;
+            switch (this.direction) {
+                case "down":
+                    blocked = maze.hasWall(x, y + 1, x + 1, y + 1);
+                    y += 1;
+                    break;
+                case "up":
+                    blocked = maze.hasWall(x, y, x + 1, y);
+                    y -= 1;
+                    break;
+                case "right":
+                    blocked = maze.hasWall(x + 1, y, x + 1, y + 1);
+                    x += 1;
+                    break;
+                case "left":
+                    blocked = maze.hasWall(x, y, x, y + 1);
+                    x -= 1;
+                    break;
+            }
+            if (blocked) break;
+        }
+
+    }
 }
