@@ -1,6 +1,6 @@
 import { MINOTAUR_SPEED, PLAYER_SPEED } from "./constants.js";
 import { Graphics, loadGraphics } from "./graphics.js";
-import { Maze } from "./maze.js";
+import { cellMaze, layerMaze } from "./maze.js";
 import { Minotaur } from "./minotaur.js";
 import { Player } from "./player.js";
 
@@ -18,13 +18,31 @@ window.preload = () => {
     loadGraphics();
 }
 
-function resetGame(resetMaze) {
-    if (resetMaze) maze = new Maze(8, 8, 4, 4);
-    graphics = new Graphics("sand");
-    player = new Player(8, 19);
-    ammunitions = [[8, 17], [8, 16]];
-    minotaurs = [new Minotaur(8, 22), new Minotaur(8, 23)];
+function loadLevel(levelIdx, resetMaze) {
     moveCooldown = 0;
+
+    switch (levelIdx % 2) {
+        case 0:
+            if (resetMaze) maze = layerMaze(17, 6, 4);
+            graphics = new Graphics("sand");
+            player = new Player(8, 23);
+            ammunitions = [[8, 0]];
+            minotaurs = [new Minotaur(8, 30)];
+            break;
+        case 1:
+            if (resetMaze) maze = cellMaze(8, 8, 4, 4);
+            graphics = new Graphics("mansion");
+            player = new Player(8, 19);
+            ammunitions = [[8, 17], [8, 16]];
+            minotaurs = [new Minotaur(8, 22), new Minotaur(8, 23)];
+            break;
+    }
+}
+
+let currentLevel = -1;
+function resetGame(resetMaze) {
+    if (resetMaze) currentLevel += 1;
+    loadLevel(currentLevel, resetMaze);
 }
 
 window.setup = () => {

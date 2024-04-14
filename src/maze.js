@@ -1,9 +1,61 @@
-export class Maze {
-    constructor(chunkWidth, chunkHeight, numX, numY) {
+export function cellMaze(chunkWidth, chunkHeight, numX, numY) {
+    let maze = new Maze(chunkWidth * numX, chunkHeight * numY);
+
+    maze._splitHorizontal(0, maze.width, -1, 0);
+    maze._splitHorizontal(0, maze.width, -1, maze.height);
+    maze._splitVertical(0, maze.height, -1, 0);
+    maze._splitVertical(0, maze.height, -1, maze.width);
+
+    for (let y = 0; y < maze.height; y += chunkHeight) {
+        for (let x = 0; x < maze.width; x += chunkWidth) {
+            if (x > 0) {
+                let gapY = linearDistr(y, y + chunkHeight - 1);
+                maze._splitVertical(y, y + chunkHeight, gapY, x);
+            }
+            if (y > 0) {
+                let gapX = linearDistr(x, x + chunkWidth - 1);
+                maze._splitHorizontal(x, x + chunkWidth, gapX, y);
+            }
+
+            maze._constructInner(x, y, x + chunkWidth, y + chunkHeight);
+        }
+    }
+    
+    return maze;
+}
+
+export function layerMaze(width, layerHeight, numLayers) {
+    let maze = new Maze(width, layerHeight * numLayers);
+
+    maze._splitHorizontal(0, maze.width, -1, 0);
+    maze._splitHorizontal(0, maze.width, Math.floor(maze.width / 2), maze.height);
+    maze._splitVertical(0, maze.height, -1, 0);
+    maze._splitVertical(0, maze.height, -1, maze.width);
+
+    let midX = Math.floor(maze.width / 2);
+    maze._splitVertical(maze.height, maze.height + 20, -1, midX);
+    maze._splitVertical(maze.height, maze.height + 20, -1, midX + 1);
+
+    let oddOffset = Math.random() < 0.5 ? 1 : 0;
+    for (let y = 0; y < maze.height; y += layerHeight) {
+        if (y > 0) {
+            let gapMin = oddOffset % 2 ? 0 : Math.floor(width / 2);
+            let gapMax = oddOffset % 2 ? Math.floor(width / 2) : width - 1;
+            let gapX = linearDistr(gapMin, gapMax);
+            maze._splitHorizontal(0, maze.width, gapX, y);
+            oddOffset += 1;
+        }
+        maze._constructInner(0, y, maze.width, y + layerHeight);
+    }
+
+    return maze;
+}
+
+class Maze {
+    constructor(width, height) {
         this._walls = new Set();
-        this.height = chunkWidth * numX;
-        this.width = chunkHeight * numY;
-        this._construct(chunkWidth, chunkHeight, numX, numY);
+        this.width = width;
+        this.height = height;
     }
 
     _wallString(x1, y1, x2, y2) {
@@ -24,32 +76,6 @@ export class Maze {
             walls.push(wall.split(" ").map(n => parseInt(n)));
         }
         return walls;
-    }
-
-    _construct(chunkWidth, chunkHeight, numX, numY) {
-        for (let x = 0; x < this.width; x++) {
-            this.addWall(x, 0, x + 1, 0);
-            this.addWall(x, this.height, x + 1, this.height);
-        }
-        for (let y = 0; y < this.height; y++) {
-            this.addWall(0, y, 0, y + 1);
-            this.addWall(this.width, y, this.width, y + 1);
-        }
-
-        for (let y = 0; y < this.height; y += chunkHeight) {
-            for (let x = 0; x < this.width; x += chunkWidth) {
-                if (x > 0) {
-                    let gapY = linearDistr(y, y + chunkHeight - 1);
-                    this._splitVertical(y, y + chunkHeight, gapY, x);
-                }
-                if (y > 0) {
-                    let gapX = linearDistr(x, x + chunkWidth - 1);
-                    this._splitHorizontal(x, x + chunkWidth, gapX, y);
-                }
-
-                this._constructInner(x, y, x + chunkWidth, y + chunkHeight);
-            }
-        }
     }
 
     _splitHorizontal(minX, maxX, gapX, y) {
@@ -101,24 +127,4 @@ function linearDistr(min, max) {
 function triangleDistr(min, max) {
     let r = (Math.random() + Math.random()) / 2;
     return min + Math.floor(r * (max - min + 1));
-}
-
-function evenSplits(min, max, splits) {
-    if (splits === 0) return [];
-
-    let splitsBefore = Math.floor((splits - 1) / 2);
-    let splitsAfter = Math.ceil((splits - 1) / 2);
-
-    let min2 = min + splitsBefore;
-    let max2 = max - splitsAfter;
-
-    let lo = Math.floor((min2 * 2 + max2 * 1) / 3);
-    let hi = Math.ceil((min2 * 1 + max2 * 2) / 3);
-    let split = triangleDistr(lo, hi);
-
-    return [
-        ...evenSplits(min, split - 1, splitsBefore),
-        split,
-        ...evenSplits(split + 1, max, splitsAfter),
-    ];
 }
