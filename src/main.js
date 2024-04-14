@@ -95,7 +95,7 @@ class GameState {
 
                 switch (this.keyStack[i]) {
                     case 37: // LeftArrow
-                    case 64: // A
+                    case 65: // A
                         dir = [-1, 0];
                         break;
                     case 38: // UpArrow
@@ -174,7 +174,7 @@ class GameState {
             case 38:
             case 39:
             case 40:
-            case 64:
+            case 65:
             case 68:
             case 83:
             case 87:
@@ -194,7 +194,7 @@ class GameState {
             case 38:
             case 39:
             case 40:
-            case 64:
+            case 65:
             case 68:
             case 83:
             case 87:
