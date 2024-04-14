@@ -68,7 +68,8 @@ class GameState {
                 this.player = new Player(18, 18);
                 this.player.ammunition = Infinity;
                 this.ammunitions = [];
-                this.monsters = this.levelExtra.map(([x, y]) => new Monster(x, y, "dog", 24));
+                let monsters = ["minotaur", "bat", "dog"]
+                this.monsters = this.levelExtra.map(([x, y], i) => new Monster(x, y, monsters[i % monsters.length], 24));
                 break;
         }
 
