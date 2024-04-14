@@ -1,4 +1,4 @@
-import { MONSTER_SPEED, PLAYER_SPEED } from "./constants.js";
+import { PLAYER_SPEED } from "./constants.js";
 import { Graphics, loadGraphics } from "./graphics.js";
 import { cellMaze, layerMaze } from "./maze.js";
 import { Monster } from "./monster.js";
@@ -34,11 +34,11 @@ function loadLevel(levelIdx, resetMaze) {
             player = new Player(8, 23);
 
             ammunitions = levelExtra.slice();
-            monsters = [new Monster(8, 30, "minotaur")];
+            monsters = [new Monster(8, 30, "minotaur", 20)];
             break;
         case 1:
             if (resetMaze) {
-                maze = cellMaze(8, 8, 3, 3);
+                maze = cellMaze(4, 4, 6, 6);
 
                 let pos1 = Math.floor(Math.random() * 24);
                 let pos2 = Math.floor(Math.random() * 24);
@@ -49,7 +49,7 @@ function loadLevel(levelIdx, resetMaze) {
             player = new Player(8, 19);
 
             ammunitions = levelExtra.slice();
-            monsters = levelExtra.map(([x, y]) => new Monster(x, y, "bat"));
+            monsters = levelExtra.map(([x, y]) => new Monster(x, y, "bat", 32));
             break;
     }
 
@@ -77,8 +77,8 @@ window.windowResized = () => {
 
 window.draw = () => {
     // Game logic
-    if (frameCount % MONSTER_SPEED === 0) {
-        for (let monster of monsters) {
+    for (let monster of monsters) {
+        if (frameCount % monster.speed === 0) {
             if (!monster.isDead) {
                 monster.stepTowardsPlayer(player, maze);
             }

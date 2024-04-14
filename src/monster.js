@@ -1,10 +1,11 @@
 export class Monster {
-    constructor(x, y, type) {
+    constructor(x, y, type, speed) {
         this.posX = x;
         this.posY = y;
         this.isLookingLeft = false;
         this.isDead = false;
         this.type = type;
+        this.speed = speed;
     }
 
     stepTowardsPlayer(player, maze) {
