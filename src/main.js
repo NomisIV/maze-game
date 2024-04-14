@@ -58,14 +58,14 @@ function loadLevel(levelIdx, resetMaze) {
     }
 }
 
-let currentLevel = -1;
+let currentLevel = 0;
 function resetGame(resetMaze) {
     if (resetMaze) currentLevel += 1;
     loadLevel(currentLevel, resetMaze);
 }
 
 window.setup = () => {
-    resetGame(true);
+    loadLevel(currentLevel, true)
 
     window.createCanvas(window.innerWidth, window.innerHeight);
 
@@ -156,8 +156,9 @@ window.draw = () => {
 window.keyPressed = () => {
     console.log("Pressed: :", window.keyCode);
     switch (window.keyCode) {
-        case 27:
-            resetGame(true);
+        case 13:
+            if (monsters.every((monster) => monster.isDead))
+                resetGame(true);
             break;
         case 32:
             player.fireGun(monsters, maze);
