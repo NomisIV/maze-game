@@ -57,6 +57,12 @@ export class Graphics {
         }
     }
 
+    copyExplored(other) {
+        for (let [pos, _] of other.shownTiles) {
+            this.shownTiles.set(pos, Date.now() - FOG_FADE_IN * 1000);
+        }
+    }
+
     moveCamera() {
         if (this.playerX === null || this.playerY === null) return;
 

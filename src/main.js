@@ -18,24 +18,43 @@ window.preload = () => {
     loadGraphics();
 }
 
+let levelExtra;
 function loadLevel(levelIdx, resetMaze) {
     moveCooldown = 0;
 
+    let oldGraphics = graphics;
+
     switch (levelIdx % 2) {
         case 0:
-            if (resetMaze) maze = layerMaze(17, 6, 4);
+            if (resetMaze) {
+                maze = layerMaze(17, 6, 4);
+                levelExtra = [[Math.floor(Math.random() * 17), 0]];
+            };
             graphics = new Graphics("sand");
             player = new Player(8, 23);
-            ammunitions = [[8, 0]];
+
+            ammunitions = levelExtra.slice();
             minotaurs = [new Minotaur(8, 30)];
             break;
         case 1:
-            if (resetMaze) maze = cellMaze(8, 8, 4, 4);
+            if (resetMaze) {
+                maze = cellMaze(8, 8, 3, 3);
+
+                let pos1 = Math.floor(Math.random() * 24);
+                let pos2 = Math.floor(Math.random() * 24);
+                if ((pos1 ^ pos2) & 1) pos2 ^= 1;
+                levelExtra = Math.random() < 0.5 ? [[pos1, 0], [pos2, 23]] : [[0, pos1], [23, pos2]];
+            }
             graphics = new Graphics("mansion");
             player = new Player(8, 19);
-            ammunitions = [[8, 17], [8, 16]];
-            minotaurs = [new Minotaur(8, 22), new Minotaur(8, 23)];
+
+            ammunitions = levelExtra.slice();
+            minotaurs = levelExtra.map(([x, y]) => new Minotaur(x, y));
             break;
+    }
+
+    if (!resetMaze) {
+        graphics.copyExplored(oldGraphics);
     }
 }
 
