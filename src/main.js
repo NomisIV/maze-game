@@ -149,6 +149,8 @@ window.draw = () => {
     graphics.drawFogOfWar(maze, player);
 
     graphics.endDrawing();
+
+    graphics.drawUI(player);
 };
 
 window.keyPressed = () => {

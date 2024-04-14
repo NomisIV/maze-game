@@ -293,4 +293,10 @@ export class Graphics {
             }
         }
     }
+
+    drawUI(player) {
+        window.noSmooth();
+        if (player.hasAmmonution)
+            window.image(ammoSprite, window.width - 128, window.height - 128, 128, 128);
+    }
 }
