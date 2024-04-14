@@ -274,24 +274,25 @@ export class Graphics {
         }
     }
 
-    drawUI(player, monsters) {
+    drawUI(player, monsters, attempt) {
         window.noSmooth();
-        if (player.hasAmmonution) {
-            window.image(ammoSprite, window.width - 128, window.height - 128, 128, 128);
+        for (let a = 0; a < Math.min(player.ammunition, 5); a++) {
+            window.image(ammoSprite, window.width - 128 - 64 * a, window.height - 128, 128, 128);
         }
+        window.textFont(pixelFont);
+        window.fill('yellow');
+        window.textAlign(LEFT);
+        window.textSize(50);
+        window.text('Attempt: ' + attempt, 32, window.height - 32);
         if (player.isDead) {
-            window.textFont(pixelFont);
             window.textSize(100);
-            window.fill('yellow');
             window.textAlign(CENTER);
             window.text('You died', window.width / 2, window.height / 2);
             window.textSize(50);
             window.text('Press R to retry', window.width / 2, window.height / 2 + 100);
         }
         if (monsters.every((monster) => monster.isDead)) {
-            window.textFont(pixelFont);
             window.textSize(100);
-            window.fill('yellow');
             window.textAlign(CENTER);
             window.text('You survived', window.width / 2, window.height / 2);
             window.textSize(50);

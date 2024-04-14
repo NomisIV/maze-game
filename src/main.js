@@ -8,6 +8,7 @@ class GameState {
     constructor(levelIdx) {
         this.graphics = null;
         this.keyStack = [];
+        this.attempt = 0;
 
         switch (levelIdx % 3) {
             case 0:
@@ -45,6 +46,7 @@ class GameState {
 
     resetLevel() {
         this.moveCooldown = 0;
+        this.attempt += 1;
 
         let oldGraphics = this.graphics;
 
@@ -156,7 +158,7 @@ class GameState {
 
         this.graphics.endDrawing();
 
-        this.graphics.drawUI(this.player, this.monsters);
+        this.graphics.drawUI(this.player, this.monsters, this.attempt);
     }
 
     keyPressed(keyCode) {
